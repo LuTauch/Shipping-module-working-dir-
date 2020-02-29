@@ -16,3 +16,7 @@ services:
 
 	configFormFirst:
 	    class: App\Forms\ConfigFormFirst
+	configFormSecond:
+	    class: App\Forms\ConfigFormSecond
+
+	- App\Model\CarrierModel
