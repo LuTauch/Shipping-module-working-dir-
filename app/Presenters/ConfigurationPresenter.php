@@ -9,7 +9,7 @@ use Nette\ComponentModel\IComponent;
 use Tracy\Debugger;
 
 
-final class HomepagePresenter extends Nette\Application\UI\Presenter
+final class ConfigurationPresenter extends Nette\Application\UI\Presenter
 {
 
     private $serviceIds;

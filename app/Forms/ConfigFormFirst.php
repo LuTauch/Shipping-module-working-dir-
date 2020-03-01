@@ -36,9 +36,10 @@ class ConfigFormFirst extends BaseComponent
         $form->setMethod('POST');
 
         $form->addCheckboxList('packet', 'Typ zásilek', [
-            'packet_s' => 'S (hmotnost do 20 kg a nejdelší strana do 175 cm)',
-            'packet_m' => 'M (hmotnost do 30 (31,5) kg a nejdelší strana do 240 (120) cm)',
-            'packet_l' => 'L (hmotnost do 50 kg a nejdelší strana do 240 cm)',
+            'packet_s' => 'Hmotnost: do 20 kg, nejdelší strana: do 175 cm',
+            'packet_m' => 'Hmotnost: do 30 kg, nejdelší strana: do 240 cm;  Hmotnost: do 31,5 kg, nejdelší strana: do 120 cm',
+
+            'packet_l' => 'Hmotnost do 50 kg, nejdelší strana: do 240 cm',
             'packet_xl' => 'Nadlimitní zásilky (rozměry neomezeny)',
         ]);
 
@@ -71,7 +72,7 @@ class ConfigFormFirst extends BaseComponent
     public function configFormSucceeded(UI\Form $form, \stdClass $values)
     {
         $availableServiceIds = $this->carrierModel->findServiceIds($values);
-        $this->presenter->redirect('Homepage:step2', [$availableServiceIds]); //pres presenter
+        $this->presenter->redirect('Configuration:step2', [$availableServiceIds]); //pres presenter
 
 
     }

@@ -65,7 +65,7 @@ class ConfigFormSecond extends BaseComponent
     {
         $this->carrierModel->saveSelectedServiceIds($values->services);
 
-        $this->presenter->flashMessage('Úspěšně se uložili vybraní dopravci.');
-        $this->presenter->redirect('Homepage:');
+        $this->presenter->flashMessage('Vybrané služby byly uloženy.');
+        $this->presenter->redirect('Configuration:');
     }
 }
