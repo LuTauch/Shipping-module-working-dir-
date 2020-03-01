@@ -4,10 +4,14 @@ namespace App\Forms;
 
 use Nette\Application\UI\Control;
 
+/**
+ * Class BaseComponent represents a base component of the project. It contains only a method for content rendering.
+ * @package App\Forms
+ */
 abstract class BaseComponent extends Control
 {
     /**
-     * ziskame nazev pro latte z nazvu tridy php
+     * Gets name for template (.latte) from class name (.php) and renders the template.
      */
     public function render()
     {

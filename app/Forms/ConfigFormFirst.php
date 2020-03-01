@@ -7,17 +7,29 @@ use Nette\Application\UI;
 use Nette\Forms\Form;
 
 
+/**
+ * Class ConfigFormFirst represents first step in the configuration process (e-shop categorisation and service preference).
+ * It defines a configuration form and a way to process the data sent from it.
+ * @package App\Forms
+ */
 class ConfigFormFirst extends BaseComponent
 {
+    /** @var CarrierModel */
     private $carrierModel;
 
-    //predani zavislosti
+    /**
+     * ConfigFormFirst constructor. important for dependency handover.
+     * @param CarrierModel $carrierModel
+     */
     public function __construct(CarrierModel $carrierModel)
     {
         $this->carrierModel = $carrierModel;
     }
 
-
+    /**
+     * Creates a configuration component consisting of 3 option groups (checkboxlists).
+     * @return UI\Form
+     */
     protected function createComponentForm(): UI\Form
     {
         $form = new UI\Form();
@@ -42,56 +54,26 @@ class ConfigFormFirst extends BaseComponent
             'evening_delivery' => 'Večerní doručení',
             //'express_delivery' => 'Expresní doručení',
         ]);
-        //TODO: ruční preference dopravce
-
 
         $form->addSubmit('submit', 'Odeslat');
+        //setting on success method
         $form->onSuccess[] = [$this, 'configFormSucceeded'];
         return $form;
     }
 
+    /**
+     * Is being called after successful submission of the first configuration form. It processes the data from the form, gets service ids available
+     * for the user from the database and sends them to the second configuration form (by redirect).
+     * @param UI\Form $form
+     * @param \stdClass $values
+     * @throws \Nette\Application\AbortException
+     */
     public function configFormSucceeded(UI\Form $form, \stdClass $values)
     {
-       $availableServiceIds =  $this->carrierModel->findServiceIds($values);
+        $availableServiceIds = $this->carrierModel->findServiceIds($values);
         $this->presenter->redirect('Homepage:step2', [$availableServiceIds]); //pres presenter
 
 
-
-
-        //TODO zpracovat formulář
-        //poslat data do dalšího formuláře a tam se napojit na db nebo se začít bavit s db tady
-        // dotaz na vrácení všech služeb z tabulky service, které odpovídají těmto službám.
-        //potom až přesměrovat na další formulář
-
-        //kontrola typu zásilky -> projít hodnoty checkboxlistu 'packetSize' -> pole packetSizes obsahuje jen zaškrtnuté položky
-        //$form->onSuccess[] = function ($form, array $values) {
-        //$packetSizes = $values['packetSize'];
-
-
-        //kontrola typu doručení -> zjistit, která hodnota v radiolistu 'deliveryOption'byla zaskrtnuta
-        //if (#values['deliveryOption'] == 'oboji') $deliveryTypes = [onAddress, pickup]
-        // else ($deliveryTypes = #values['deliveryOption']
-
-        //kontrola typů doplňkových služeb -> projít hodnoty checkboxlistu 'additionalService' -> pole additionalServices obsahuje jen zaškrtnuté položky
-        //$form->onSuccess[] = function ($form, array $values) {
-        //$additionalServices = $values['additionalService'];
-        //};
-
-        //$values['additionalService'];
-
-        //$services = CarrierModel.php --> findService($packetSizes, $deliveryTypes, $additionalServices);
-        //$success = update($services);
-
-
-
     }
-
-    public function update($selected) { //pole?
-        //nova funkce pro update vybranych dopravcu v tabulce - foreach přes všechny $selected
-        //foreach($selected as $item) {
-        // CarrierModel.php -> saveSelected($item);
-        //}
-    }
-
 
 }
