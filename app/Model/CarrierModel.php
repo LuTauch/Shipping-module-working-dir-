@@ -7,6 +7,7 @@ namespace App\Model;
 use Nette;
 use Nette\Application\UI;
 use Nette\Forms\Form;
+use stdClass;
 use Tracy\Debugger;
 
 /**
@@ -56,7 +57,7 @@ class CarrierModel extends BaseModel
 
     /**
      * Gets service ids which suit to the condition given by sql query $innerSql.
-     * @param $values
+     * @param stdClass $values
      * @return array
      */
     public function findServiceIds($values)
@@ -72,20 +73,17 @@ class CarrierModel extends BaseModel
      * Creates sql query by iterating values sent from the user in parameter and adding key word AND/OR between them.
      * Each part of the query represents one option group (e.g. packet size, delivery type, etc.). Parts are connected by AND.
      * The inner values in each part represents specific options (e.g. packet_s, weekend delivery, etc.) and those are connected by OR.
-     * @param $values
+     * @param stdClass $values
      * @return string
      */
     private function getOptionsGroupSQLString($values)
     {
         $innerSql = '';
-        $optionsCount = count((array)$values);
-        $iteratorKey = 0;
 
         //iterating over the option groups
         foreach ($values as $optionGroup) {
             //skipping an empty option group
             if (!$optionGroup) {
-                $iteratorKey++;
                 continue;
             }
 
@@ -104,15 +102,10 @@ class CarrierModel extends BaseModel
                 }
             }
 
-            $innerSql .= ')';
-
-            //setting AND to the condition
-            if ($iteratorKey !== $optionsCount - 1) {
-                $innerSql .= ' AND ';
-            }
-
-            $iteratorKey++;
+            $innerSql .= ') AND ';
         }
+
+        $innerSql = substr($innerSql, 0, -4);
 
         return $innerSql;
     }

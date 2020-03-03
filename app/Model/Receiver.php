@@ -5,7 +5,7 @@ class Receiver
 {
     private $receiverName;
     private $receiverSurname;
-    private $receiverFirmName;
+    private $receiverCompanyName;
     private $receiverPhoneNo;
     private $receiverEmail;
     private $receiverCountryCode;

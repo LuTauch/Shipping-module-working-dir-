@@ -5,6 +5,7 @@ namespace App\Forms;
 use App\Model\CarrierModel;
 use Nette\Application\UI;
 use Nette\Forms\Form;
+use Tracy\Debugger;
 
 
 /**
@@ -72,6 +73,13 @@ class ConfigFormFirst extends BaseComponent
     public function configFormSucceeded(UI\Form $form, \stdClass $values)
     {
         $availableServiceIds = $this->carrierModel->findServiceIds($values);
+
+        if($availableServiceIds === [])
+        {
+            $this->presenter->flashMessage('Bohužel pro vybrané služby není žádný dopravce. Zkuste zvolit jiné kombinace.', 'danger');
+            $this->presenter->redirect('this');
+        }
+
         $this->presenter->redirect('Configuration:step2', [$availableServiceIds]); //pres presenter
 
 

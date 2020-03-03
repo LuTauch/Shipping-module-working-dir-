@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Model\Carrier;
 
 class Dpd implements ICarrier
 {
