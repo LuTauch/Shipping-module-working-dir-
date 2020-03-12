@@ -3,15 +3,14 @@
 
 class Receiver
 {
-    private $receiverName;
-    private $receiverSurname;
-    private $receiverCompanyName;
-    private $receiverPhoneNo;
-    private $receiverEmail;
-    private $receiverCountryCode;
-    private $receiverZipCode;
-    private $receiverCity;
-    private $receiverStreet;
-    private $receiverHouseNo;
-    private $receiver;
+    private $Name;
+    private $Surname;
+    private $CompanyName;
+    private $PhoneNo;
+    private $Email;
+    private $CountryCode;
+    private $ZipCode;
+    private $City;
+    private $Street;
+    private $HouseNo;
 }
