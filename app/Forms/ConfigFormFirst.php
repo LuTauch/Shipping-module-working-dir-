@@ -42,7 +42,8 @@ class ConfigFormFirst extends BaseComponent
 
             'packet_l' => 'Hmotnost do 50 kg, nejdelší strana: do 240 cm',
             'packet_xl' => 'Nadlimitní zásilky (rozměry neomezeny)',
-        ]);
+    ])->addRule(Form::FILLED, 'Vyberte prosím typ zásilek!');
+
 
         //toto dat mozna do samostatneho kontejneru?
         $delivery = [
