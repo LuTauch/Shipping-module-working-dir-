@@ -18,5 +18,11 @@ services:
 	    class: App\Forms\ConfigFormFirst
 	configFormSecond:
 	    class: App\Forms\ConfigFormSecond
+	shipmentFormFirst:
+	    class: App\Forms\ShipmentFormFirst
+	shipmentFormSecond:
+	    class: App\Forms\ShipmentFormSecond
 
 	- App\Model\CarrierModel
+	- App\Model\CarrierModelPhase2
+	- App\Model\OptionsModel

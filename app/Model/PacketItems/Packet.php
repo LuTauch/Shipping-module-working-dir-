@@ -1,16 +1,16 @@
 <?php
 
+namespace App\Model\PacketItems;
 
 class Packet
 {
     private $ID;
-    private $Receiver;
-    private $Size;
-    private $Cod;
+    private $receiver;
+    private $size;
+    private $cod;
     private $eshop;
     private $priceOption;
     private $service;
-    private $Parcel;
 
 
 }

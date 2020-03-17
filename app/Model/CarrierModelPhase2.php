@@ -4,15 +4,18 @@
 namespace App\Model;
 
 
+use Nette;
+use Nette\Application\UI;
 use Nette\Database\Context;
-use App\Model\OptionsModel;
+use Nette\Forms\Form;
+use stdClass;
 use Tracy\Debugger;
 
 /**
  * Class CarrierModel serves for database connection. It contains methods mainly for getting data from database.
  * It extends class BaseModel.
  */
-class CarrierModel extends BaseModel
+class CarrierModelPhase2 extends BaseModel
 {
     /** @var string name of the main table in the database */
     const TABLE_NAME = "service";
@@ -22,8 +25,8 @@ class CarrierModel extends BaseModel
 
     /**
      * CarrierModel constructor.
-     * @param Context $database
-     * @param \App\Model\OptionsModel $optionsModel
+     * @param Nette\Database\Context $database
+     * @param OptionsModel $optionsModel
      */
     public function __construct(Context $database, OptionsModel $optionsModel)
     {
@@ -42,7 +45,7 @@ class CarrierModel extends BaseModel
 
     /**
      * Gets names of carrier services by their ids.
-     * @param $serviceIds
+     * @param $serviceIds service ids
      * @return array|Nette\Database\IRow[] service ids paired with their names
      */
     public function getServicesForCheckboxList($serviceIds)
@@ -65,32 +68,11 @@ class CarrierModel extends BaseModel
      */
     public function findServiceIds($values)
     {
-
         $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
 
-        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE ' . $innerSql)->fetchPairs(NULL, 'service_id');
+        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE ' . $innerSql . ' AND  selected = 1')->fetchPairs(NULL, 'service_id');
 
         return $serviceIds;
     }
-
-
-    /**
-     * Updates column 'selected' in the table 'service'
-     * @param $serviceIds
-     * @return int
-     */
-    public function saveSelectedServiceIds($serviceIds)
-    {
-        $by = [
-            'service_id' => $serviceIds
-        ];
-
-        $updateData = [
-            'selected' => 1
-        ];
-
-        return $this->findBy($by)->update($updateData);
-    }
-
 
 }

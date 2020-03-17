@@ -4,18 +4,18 @@
 namespace App\Model\Factory;
 
 
+use App\Model\Carrier\Zasilkovna;
 use App\Model\Carrier\CeskaPosta;
 use App\Model\Carrier\Dpd;
 use App\Model\Carrier\Ppl;
-use App\Model\Carrier\Zasilkovna;
+
 
 class CarrierFactory extends BaseCarrierFactory
 {
-
     /**
      * @param string $name
-     * @return \ICarrier
-     * @throws \NonexistingCarrierException
+     * @return CeskaPosta|Dpd|Ppl|Zasilkovna
+     * @throws \NonExistingCarrierException
      */
     public function createCarrier($name)
     {
@@ -29,7 +29,7 @@ class CarrierFactory extends BaseCarrierFactory
             case "Zasilkovna":
                 return new Zasilkovna();
             default:
-                throw new \NonexistingCarrierException();
+                throw new \NonExistingCarrierException();
         }
     }
 }

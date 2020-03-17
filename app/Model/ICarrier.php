@@ -1,6 +1,9 @@
 <?php
 
+namespace App\Model;
+use App\Model\PacketItems\Packet;
+
 interface ICarrier {
-    public function processOrder($id, Carrier $service, Packet $packet);
+    public function processOrder($service, Packet $packet);
 
 }

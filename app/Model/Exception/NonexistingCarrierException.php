@@ -1,8 +1,6 @@
 <?php
 
-namespace \App\Model\Exception;
-
-class NonexistingCarrierException extends \Exception
+class NonExistingCarrierException extends \Exception
 {
 
 }

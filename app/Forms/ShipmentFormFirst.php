@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use App\Model\CarrierModel;
+use App\Model\CarrierModelPhase2;
 use Nette\Application\UI;
 use Nette\Forms\Form;
 use Tracy\Debugger;
@@ -13,38 +14,29 @@ use Tracy\Debugger;
  * It defines a configuration form and a way to process the data sent from it.
  * @package App\Forms
  */
-class ConfigFormFirst extends BaseComponent
+class ShipmentFormFirst extends BaseComponent
 {
     /** @var CarrierModel */
-    private $carrierModel;
+    private $carrierModelPhase2;
 
     /**
      * ConfigFormFirst constructor. important for dependency handover.
      * @param CarrierModel $carrierModel
      */
-    public function __construct(CarrierModel $carrierModel)
+    public function __construct(CarrierModelPhase2 $carrierModelPhase2)
     {
-        $this->carrierModel = $carrierModel;
+        $this->carrierModelPhase2 = $carrierModelPhase2;
     }
 
     /**
      * Creates a configuration component consisting of 3 option groups (checkboxlists).
      * @return UI\Form
      */
-    public function createComponentForm(): UI\Form
+    protected function createComponentForm(): UI\Form
     {
 
         $form = new UI\Form();
         $form->setMethod('POST');
-
-        $form->addCheckboxList('packet', 'Typ zásilek', [
-            'packet_s' => 'Hmotnost: do 20 kg, nejdelší strana: do 175 cm',
-            'packet_m' => 'Hmotnost: do 30 kg, nejdelší strana: do 240 cm;  Hmotnost: do 31,5 kg, nejdelší strana: do 120 cm',
-
-            'packet_l' => 'Hmotnost do 50 kg, nejdelší strana: do 240 cm',
-            'packet_xl' => 'Nadlimitní zásilky (rozměry neomezeny)',
-    ])->addRule(Form::FILLED, 'Vyberte prosím typ zásilek!');
-
 
         //toto dat mozna do samostatneho kontejneru?
         $delivery = [
@@ -61,7 +53,7 @@ class ConfigFormFirst extends BaseComponent
 
         $form->addSubmit('submit', 'Odeslat');
         //setting on success method
-        $form->onSuccess[] = [$this, 'configFormSucceeded'];
+        $form->onSuccess[] = [$this, 'shipmentFormSucceeded'];
         return $form;
     }
 
@@ -72,17 +64,17 @@ class ConfigFormFirst extends BaseComponent
      * @param \stdClass $values
      * @throws \Nette\Application\AbortException
      */
-    public function configFormSucceeded(UI\Form $form, \stdClass $values)
+    public function shipmentFormSucceeded(UI\Form $form, \stdClass $values)
     {
-        $availableServiceIds = $this->carrierModel->findServiceIds($values);
+        $availableServiceIds = $this->carrierModelPhase2->findServiceIds($values);
 
-        if($availableServiceIds === [])
+        /*if($availableServiceIds === [])
         {
             $this->presenter->flashMessage('Bohužel pro vybrané služby není žádný dopravce. Zkuste zvolit jiné kombinace.', 'danger');
             $this->presenter->redirect('this');
-        }
+        }*/
 
-        $this->presenter->redirect('Configuration:step2', [$availableServiceIds]); //pres presenter
+        $this->presenter->redirect('Shipment:step2', [$availableServiceIds]); //pres presenter
 
 
     }
