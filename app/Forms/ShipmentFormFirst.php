@@ -38,6 +38,16 @@ class ShipmentFormFirst extends BaseComponent
         $form = new UI\Form();
         $form->setMethod('POST');
 
+        $form = $this->extendForm($form);
+
+        $form->addSubmit('submit', 'Odeslat');
+        //setting on success method
+        $form->onSuccess[] = [$this, 'shipmentFormSucceeded'];
+        return $form;
+    }
+
+    public function extendForm(Form $form)
+    {
         //toto dat mozna do samostatneho kontejneru?
         $delivery = [
             'address_delivery' => 'Na adresu',
@@ -51,9 +61,6 @@ class ShipmentFormFirst extends BaseComponent
             //'express_delivery' => 'Expresní doručení',
         ]);
 
-        $form->addSubmit('submit', 'Odeslat');
-        //setting on success method
-        $form->onSuccess[] = [$this, 'shipmentFormSucceeded'];
         return $form;
     }
 
