@@ -1,5 +1,5 @@
 {
-	"name": "LuTauch/shipping-module",
+	"name": "lu-tauch/shipping-module",
 	"description": "Shipping module",
 	"require": {
 		"php": ">=7.2",
