@@ -23,7 +23,9 @@
 		"nette/tester": "^2.0"
 	},
 	"autoload": {
-		"classmap": ["app/Bootstrap.php"]
+		"psr-0": {
+			"LuTauch": "/"
+		}
 	},
 	"minimum-stability": "stable"
 }
