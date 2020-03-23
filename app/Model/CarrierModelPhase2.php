@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Model;
+namespace LuTauch\App\Model;
 
 
 use Nette;

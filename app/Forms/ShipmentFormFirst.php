@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Forms;
+namespace LuTauch\App\Forms;
 
 use App\Model\CarrierModel;
 use App\Model\CarrierModelPhase2;

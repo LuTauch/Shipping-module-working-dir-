@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\PacketItems;
+namespace LuTauch\App\Model\PacketItems;
 
 class Cod
 {

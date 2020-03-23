@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Model\Factory;
+namespace LuTauch\App\Model\Factory;
 
 
 use App\Model\Carrier\Zasilkovna;

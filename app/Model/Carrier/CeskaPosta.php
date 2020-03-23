@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Carrier;
+namespace LuTauch\App\Model\Carrier;
 
 use App\Model\ICarrier;
 use App\Model\PacketItems\Packet;

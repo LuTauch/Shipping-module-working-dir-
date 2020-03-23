@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace LuTauch\App;
 
 use Nette\Configurator;
 

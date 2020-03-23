@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Forms;
+namespace LuTauch\App\Forms;
 
 use App\Model\CarrierModelPhase2;
 use Nette\Application\UI;

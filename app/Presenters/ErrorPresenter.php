@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presenters;
+namespace LuTauch\App\Presenters;
 
 use Nette;
 use Nette\Application\Responses;
