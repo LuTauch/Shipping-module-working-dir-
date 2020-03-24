@@ -4,10 +4,10 @@
 namespace LuTauch\App\Model\Factory;
 
 
-use App\Model\Carrier\Zasilkovna;
-use App\Model\Carrier\CeskaPosta;
-use App\Model\Carrier\Dpd;
-use App\Model\Carrier\Ppl;
+use LuTauch\App\Model\Carrier\Zasilkovna;
+use LuTauch\App\Model\Carrier\CeskaPosta;
+use LuTauch\App\Model\Carrier\Dpd;
+use LuTauch\App\Model\Carrier\Ppl;
 
 
 class CarrierFactory extends BaseCarrierFactory

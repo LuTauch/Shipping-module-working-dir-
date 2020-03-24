@@ -3,7 +3,7 @@
 namespace LuTauch\App\Forms;
 
 use Nette\Application\UI;
-use App\Model\CarrierModel;
+use LuTauch\App\Model\CarrierModel;
 use Tracy\Debugger;
 
 /**

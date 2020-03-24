@@ -2,9 +2,8 @@
 
 namespace LuTauch\App\Forms;
 
-use App\Model\CarrierModelPhase2;
 use Nette\Application\UI;
-use App\Model\CarrierModel;
+use LuTauch\App\Model\CarrierModel;
 use Tracy\Debugger;
 
 /**
@@ -22,15 +21,15 @@ class ShipmentFormSecond extends BaseComponent
     /**
      * @var CarrierModel
      */
-    private $carrierModelPhase2;
+    private $carrierModel;
 
     /**
      * ConfigFormSecond constructor (dependency handover)
      * @param CarrierModel $carrierModel
      */
-    public function __construct(CarrierModelPhase2 $carrierModelPhase2)
+    public function __construct(CarrierModel $carrierModel)
     {
-        $this->carrierModelPhase2 = $carrierModelPhase2;
+        $this->carrierModel = $carrierModel;
     }
 
     /**
@@ -47,7 +46,7 @@ class ShipmentFormSecond extends BaseComponent
     {
         $form = new UI\Form();
         //getting service names from service ids
-        $services = $this->carrierModelPhase2->getServicesForCheckboxList($this->serviceIds);
+        $services = $this->carrierModel->getServicesForCheckboxList($this->serviceIds);
 
         //sluzby
         $form->addCheckboxList('services', 'Služby', $services);

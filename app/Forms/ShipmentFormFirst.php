@@ -2,8 +2,7 @@
 
 namespace LuTauch\App\Forms;
 
-use App\Model\CarrierModel;
-use App\Model\CarrierModelPhase2;
+use LuTauch\App\Model\CarrierModel;
 use Nette\Application\UI;
 use Nette\Forms\Form;
 use Tracy\Debugger;
@@ -17,15 +16,15 @@ use Tracy\Debugger;
 class ShipmentFormFirst extends BaseComponent
 {
     /** @var CarrierModel */
-    private $carrierModelPhase2;
+    private $carrierModel;
 
     /**
      * ConfigFormFirst constructor. important for dependency handover.
      * @param CarrierModel $carrierModel
      */
-    public function __construct(CarrierModelPhase2 $carrierModelPhase2)
+    public function __construct(CarrierModel $carrierModel)
     {
-        $this->carrierModelPhase2 = $carrierModelPhase2;
+        $this->carrierModel = $carrierModel;
     }
 
     /**
@@ -73,7 +72,7 @@ class ShipmentFormFirst extends BaseComponent
      */
     public function shipmentFormSucceeded(UI\Form $form, \stdClass $values)
     {
-        $availableServiceIds = $this->carrierModelPhase2->findServiceIds($values);
+        $availableServiceIds = $this->carrierModel->findServiceFromSelected($values);
 
         /*if($availableServiceIds === [])
         {

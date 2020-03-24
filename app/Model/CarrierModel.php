@@ -5,7 +5,7 @@ namespace LuTauch\App\Model;
 
 
 use Nette\Database\Context;
-use App\Model\OptionsModel;
+use LuTauch\App\Model\OptionsModel;
 use Tracy\Debugger;
 
 /**
@@ -69,6 +69,20 @@ class CarrierModel extends BaseModel
         $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
 
         $serviceIds = $this->database->query('SELECT service_id FROM service WHERE ' . $innerSql)->fetchPairs(NULL, 'service_id');
+
+        return $serviceIds;
+    }
+
+    /**
+     * Gets service ids which suit to the condition given by sql query $innerSql.
+     * @param stdClass $values
+     * @return array
+     */
+    public function findServiceIdsFromSelected($values)
+    {
+        $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
+
+        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE ' . $innerSql . ' AND  selected = 1')->fetchPairs(NULL, 'service_id');
 
         return $serviceIds;
     }

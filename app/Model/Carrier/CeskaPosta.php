@@ -2,8 +2,8 @@
 
 namespace LuTauch\App\Model\Carrier;
 
-use App\Model\ICarrier;
-use App\Model\PacketItems\Packet;
+use LuTauch\App\Model\ICarrier;
+use LuTauch\App\Model\PacketItems\Packet;
 
 
 class CeskaPosta implements ICarrier

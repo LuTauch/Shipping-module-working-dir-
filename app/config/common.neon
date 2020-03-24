@@ -4,7 +4,7 @@ parameters:
 application:
 	errorPresenter: Error
 	mapping:
-		*: App\*Module\Presenters\*Presenter
+		*: LuTauch\App\*Module\Presenters\*Presenter
 
 
 session:
@@ -12,17 +12,16 @@ session:
 
 
 services:
-	router: App\Router\RouterFactory::createRouter
+	router: LuTauch\App\Router\RouterFactory::createRouter
 
 	configFormFirst:
-	    class: App\Forms\ConfigFormFirst
+	    class: LuTauch\App\Forms\ConfigFormFirst
 	configFormSecond:
-	    class: App\Forms\ConfigFormSecond
+	    class: LuTauch\App\Forms\ConfigFormSecond
 	shipmentFormFirst:
-	    class: App\Forms\ShipmentFormFirst
+	    class: LuTauch\App\Forms\ShipmentFormFirst
 	shipmentFormSecond:
-	    class: App\Forms\ShipmentFormSecond
+	    class: LuTauch\App\Forms\ShipmentFormSecond
 
-	- App\Model\CarrierModel
-	- App\Model\CarrierModelPhase2
-	- App\Model\OptionsModel
+	- LuTauch\App\Model\CarrierModel
+	- LuTauch\App\Model\OptionsModel

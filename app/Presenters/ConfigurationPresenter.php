@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LuTauch\App\Presenters;
 
-use App\Model\Factory\CarrierFactory;
+use LuTauch\App\Model\Factory\CarrierFactory;
 use Nette;
 use Nette\ComponentModel\IComponent;
 use Tracy\Debugger;
