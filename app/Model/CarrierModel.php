@@ -4,8 +4,9 @@
 namespace LuTauch\App\Model;
 
 
-use Nette\Database\Context;
 use LuTauch\App\Model\OptionsModel;
+use Nette\Database\Context;
+use LuTauch\App\Model\Options;
 use Tracy\Debugger;
 
 /**
@@ -20,10 +21,11 @@ class CarrierModel extends BaseModel
     /** @var OptionsModel */
     protected $optionsModel;
 
+
     /**
      * CarrierModel constructor.
      * @param Context $database
-     * @param \App\Model\OptionsModel $optionsModel
+     * @param \LuTauch\App\Model\OptionsModel $optionsModel
      */
     public function __construct(Context $database, OptionsModel $optionsModel)
     {
@@ -47,15 +49,21 @@ class CarrierModel extends BaseModel
      */
     public function getServicesForCheckboxList($serviceIds)
     {
+        //Debugger::barDump($serviceIds);die;
 
-        $sql = 'SELECT service_id, CONCAT(carrier_name, " - ", service_name) AS complete_name 
+        return $this->getServicesByIds($serviceIds)->fetchPairs('service_id', 'complete_name');
+    }
+
+    public function getServicesByIds($serviceIds)
+    {
+        $sql = 'SELECT service_id, CONCAT(carrier_name, " - ", service_name) AS complete_name, price
                 FROM carrier
                 INNER JOIN service ON service.carrier_id = carrier.carrier_id
                 WHERE service_id IN (?)';
 
         $params = [$serviceIds];
 
-        return $this->database->queryArgs($sql, $params)->fetchPairs('service_id', 'complete_name');
+        return $this->database->queryArgs($sql, $params);
     }
 
     /**
@@ -78,11 +86,20 @@ class CarrierModel extends BaseModel
      * @param stdClass $values
      * @return array
      */
-    public function findServiceIdsFromSelected($values)
+    public function findServiceIdsFromSelected($weight, $values)
     {
         $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
 
-        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE ' . $innerSql . ' AND  selected = 1')->fetchPairs(NULL, 'service_id');
+        if ($innerSql != '') {
+            $innerSql = $innerSql . ' AND ';
+        }
+
+
+        $packetCategorySql = $this->optionsModel->getCategoryOfPacket($weight);
+
+        $sql = 'SELECT service_id FROM service WHERE ' . $innerSql . 'selected = 1 AND ' . $packetCategorySql;
+
+        $serviceIds = $this->database->query($sql)->fetchPairs(NULL, 'service_id');
 
         return $serviceIds;
     }
@@ -104,6 +121,20 @@ class CarrierModel extends BaseModel
         ];
 
         return $this->findBy($by)->update($updateData);
+    }
+
+    public function getPriceOfService($id)
+    {
+        return $this->database->query('SELECT price FROM service WHERE service_id = ?', $id)->fetchPairs(NULL, 'price');;
+    }
+
+    public function getServicesWithPickup()
+    {
+        $by = [
+            'has_pickup' => 1
+        ];
+
+        return $this->findBy($by);
     }
 
 

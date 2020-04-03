@@ -1,1 +1,27 @@
-{control form}
+{form form}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" n:if="$form->hasErrors()">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span n:foreach="$form->errors as $error">{$error}</span>
+    </div>
+    <fieldset>
+        <legend>Doprava</legend>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label services class=>'font-weight-bold'/}
+                <br>
+                {input services class=>'form-control'}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label pickup_place class=>'font-weight-bold'/}
+                <br>
+                {input pickup_place class=>'form-control'}
+            </div>
+        </div>
+    </fieldset>
+    <a class="btn btn-primary" href="{plink Order:payment}">Zpět na výběr platby</a>
+    {input submit class=>"btn btn-primary"}
+{/form}

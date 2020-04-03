@@ -53,5 +53,19 @@ class OptionsModel
     }
 
 
+    public function getCategoryOfPacket($weight) {
+        if ($weight < 20000) {
+            return 'packet_s = 1';
+        } else if (($weight >= 20000) && ($weight < 31500)){
+            return 'packet_m = 1';
+        } else if (($weight >= 31500) && ($weight < 50000)){
+            return'packet_l = 1';
+        } else {
+            return 'packet_xl = 1';
+        }
+    }
+
+
+
 
 }

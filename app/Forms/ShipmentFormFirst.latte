@@ -1,1 +1,22 @@
-{control form}
+{form form}
+    <fieldset>
+        <legend>Doprava</legend>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label deliveryOption class=>'font-weight-bold'/}
+                <br>
+                {input deliveryOption class=>'form-control'}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label additionalService class=>'font-weight-bold'/}
+                <br>
+                {input additionalService class=>'form-control'}
+            </div>
+        </div>
+    </fieldset>
+    <a class="btn btn-primary" href="{plink Order:payment}">Zpět na výběr platby</a>
+    {input submit class=>"btn btn-primary"}
+
+{/form}

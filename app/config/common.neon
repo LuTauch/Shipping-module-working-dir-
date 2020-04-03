@@ -1,6 +1,10 @@
 parameters:
 
 
+includes:
+    - accessData.neon
+    - eshop.neon
+
 application:
 	errorPresenter: Error
 	mapping:
@@ -14,14 +18,16 @@ session:
 services:
 	router: LuTauch\App\Router\RouterFactory::createRouter
 
-	configFormFirst:
+	ConfigFormFirst:
 	    class: LuTauch\App\Forms\ConfigFormFirst
-	configFormSecond:
+	ConfigFormSecond:
 	    class: LuTauch\App\Forms\ConfigFormSecond
-	shipmentFormFirst:
+	ShipmentFormFirst:
 	    class: LuTauch\App\Forms\ShipmentFormFirst
-	shipmentFormSecond:
+	ShipmentFormSecond:
 	    class: LuTauch\App\Forms\ShipmentFormSecond
 
 	- LuTauch\App\Model\CarrierModel
 	- LuTauch\App\Model\OptionsModel
+	- LuTauch\App\Model\Options
+	- LuTauch\App\Model\OrderAcceptance

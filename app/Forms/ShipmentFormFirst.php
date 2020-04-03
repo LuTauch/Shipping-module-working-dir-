@@ -2,7 +2,9 @@
 
 namespace LuTauch\App\Forms;
 
+use App\Model\CartSession;
 use LuTauch\App\Model\CarrierModel;
+use LuTauch\App\Model\Options;
 use Nette\Application\UI;
 use Nette\Forms\Form;
 use Tracy\Debugger;
@@ -19,12 +21,22 @@ class ShipmentFormFirst extends BaseComponent
     private $carrierModel;
 
     /**
+     * @var Options
+     */
+    private $options;
+
+    /**
      * ConfigFormFirst constructor. important for dependency handover.
      * @param CarrierModel $carrierModel
+     * @param Options $options
      */
     public function __construct(CarrierModel $carrierModel)
     {
         $this->carrierModel = $carrierModel;
+    }
+
+    public function setOption(Options $options) {
+        $this->options = $options;
     }
 
     /**
@@ -39,7 +51,7 @@ class ShipmentFormFirst extends BaseComponent
 
         $form = $this->extendForm($form);
 
-        $form->addSubmit('submit', 'Odeslat');
+        $form->addSubmit('submit', 'Další');
         //setting on success method
         $form->onSuccess[] = [$this, 'shipmentFormSucceeded'];
         return $form;
@@ -54,7 +66,6 @@ class ShipmentFormFirst extends BaseComponent
         ];
         $form->addCheckboxList('deliveryOption', 'Způsob doručení:', $delivery);
         $form->addCheckboxList('additionalService', 'Doplňkové služby', [
-            'cash_on_delivery' => 'Dobírka',
             'weekend_delivery' => 'Víkendové doručení',
             'evening_delivery' => 'Večerní doručení',
             //'express_delivery' => 'Expresní doručení',
@@ -72,15 +83,11 @@ class ShipmentFormFirst extends BaseComponent
      */
     public function shipmentFormSucceeded(UI\Form $form, \stdClass $values)
     {
-        $availableServiceIds = $this->carrierModel->findServiceFromSelected($values);
+        //Debugger::barDump( $this->carrierModel->findServiceIdsFromSelected($this->options->getWeight(), $values));die;
+        $availableServiceIds = $this->carrierModel->findServiceIdsFromSelected($this->options->getWeight(), $values);
+        $this->presenter->redirect('Shipment:step2', [$availableServiceIds]);
 
-        /*if($availableServiceIds === [])
-        {
-            $this->presenter->flashMessage('Bohužel pro vybrané služby není žádný dopravce. Zkuste zvolit jiné kombinace.', 'danger');
-            $this->presenter->redirect('this');
-        }*/
 
-        $this->presenter->redirect('Shipment:step2', [$availableServiceIds]); //pres presenter
 
 
     }

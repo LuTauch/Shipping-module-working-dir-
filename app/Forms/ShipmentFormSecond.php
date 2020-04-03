@@ -2,8 +2,11 @@
 
 namespace LuTauch\App\Forms;
 
+use LuTauch\App\Model\Options;
 use Nette\Application\UI;
 use LuTauch\App\Model\CarrierModel;
+use Nette\ComponentModel\IComponent;
+use Nette\Forms\Form;
 use Tracy\Debugger;
 
 /**
@@ -23,6 +26,7 @@ class ShipmentFormSecond extends BaseComponent
      */
     private $carrierModel;
 
+
     /**
      * ConfigFormSecond constructor (dependency handover)
      * @param CarrierModel $carrierModel
@@ -41,18 +45,38 @@ class ShipmentFormSecond extends BaseComponent
         $this->serviceIds = $serviceIds;
     }
 
+
+
     /** Creates a configuration form with a checkboxlist containing service names */
     public function createComponentForm(): UI\Form
     {
         $form = new UI\Form();
         //getting service names from service ids
-        $services = $this->carrierModel->getServicesForCheckboxList($this->serviceIds);
+
+        $services = $this->carrierModel->getServicesByIds($this->serviceIds)->fetchAll();
+        $servicesWithPickup = $this->carrierModel->getServicesWithPickup()->select('service_id')->fetchAll();
 
         //sluzby
-        $form->addCheckboxList('services', 'Služby', $services);
+        $options = [];
+        foreach ($services as $item)
+        {
+            $options[$item->service_id] = \Nette\Utils\Html::el('span')->setText($item->complete_name . ' (' . $item->price . ' Kč)')->addAttributes(['data-text' => $item->service_id]);
+        }
+
+        $form->addRadioList('services', 'Služby', $options)->setRequired();
+
+        $form->addText('pickup_place', 'Odběrné místo')
+            ->addConditionOn($form['services'], Form::IS_NOT_IN, $servicesWithPickup)
+                ->addRule(Form::BLANK, 'Smažte prosím odběrné místo. Tento typ dopravce jej nepodporuje.')
+            ->endCondition()
+            ->addConditionOn($form['services'], Form::IS_IN, $servicesWithPickup)
+            ->setRequired('Vyplňte prosím odběrné místo pro dopravce.')
+        ->endCondition();
 
 
-        $form->addSubmit('next', 'Další');
+
+
+        $form->addSubmit('submit', 'Další');
         $form->onSuccess[] = [$this, 'shipmentFormSecondSucceeded'];
         return $form;
     }
@@ -66,9 +90,7 @@ class ShipmentFormSecond extends BaseComponent
      */
     public function shipmentFormSecondSucceeded(UI\Form $form, \stdClass $values)
     {
-        //uložit vybrané do instance Packet
 
-        $this->presenter->flashMessage('');
-        $this->presenter->redirect('');
+
     }
 }
