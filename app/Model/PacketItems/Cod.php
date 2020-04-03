@@ -4,26 +4,21 @@ namespace LuTauch\App\Model\PacketItems;
 
 class Cod
 {
-    /**
-     * @var string type of currency
-     */
-    private $currency;
 
+    private $currency;
     /**
      * @var string value of cash on delivery
      */
     private $value;
 
-    /** Czech crown */
-    const CURRENCY = "CZK";
-
-
-    public function __construct($value)
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
     {
-        $this->value =  $value;
-        $this->currency = self::CURRENCY;
-
+        $this->currency = $currency;
     }
+
 
     /**
      * @return mixed

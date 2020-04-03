@@ -13,19 +13,76 @@ class Receiver
     private $street;
     private $houseNo;
 
-    const COUNTRYCODE = "CZ";
-
-    public function __construct($name, $surname, $phoneNo, $email, $street, $houseNo, $city, $zipCode)
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @param mixed $surname
+     */
+    public function setSurname($surname): void
+    {
         $this->surname = $surname;
+    }
+
+    /**
+     * @param mixed $phoneNo
+     */
+    public function setPhoneNo($phoneNo): void
+    {
         $this->phoneNo = $phoneNo;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
         $this->email = $email;
-        $this->street = $street;
-        $this->houseNo = $houseNo;
-        $this->city = $city;
+    }
+
+    /**
+     * @param mixed $countryCode
+     */
+    public function setCountryCode($countryCode): void
+    {
+        $this->countryCode = $countryCode;
+    }
+
+    /**
+     * @param mixed $zipCode
+     */
+    public function setZipCode($zipCode): void
+    {
         $this->zipCode = $zipCode;
-        $this->countryCode = self::COUNTRYCODE;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @param mixed $street
+     */
+    public function setStreet($street): void
+    {
+        $this->street = $street;
+    }
+
+    /**
+     * @param mixed $houseNo
+     */
+    public function setHouseNo($houseNo): void
+    {
+        $this->houseNo = $houseNo;
     }
 
 
@@ -100,4 +157,6 @@ class Receiver
     {
         return $this->houseNo;
     }
+
+
 }

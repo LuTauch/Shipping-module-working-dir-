@@ -12,12 +12,9 @@ class Size
     private $width;
     private $height;
 
-    public function __construct($weight)
-    {
-        $this->weight = $weight;
-    }
 
-    /**
+
+     /**
      * @return string
      */
     public function getWeight(): string

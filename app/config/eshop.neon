@@ -1,12 +1,12 @@
 parameters:
-    eshop: "Lucikuv Eshop"
+    eshop: 'Lucikuv Eshop'
 
 
     sender:
-        name: "Lucie"
-        surname: "Tauchenová"
-        id: "123456"
+        name: 'Lucie'
+        surname: 'Tauchenová'
+        id: '123456'
 
-    currency: "CZK"
-    countryCode: "CZ"
+    currency: 'CZK'
+    countryCode: 'CZ'
 

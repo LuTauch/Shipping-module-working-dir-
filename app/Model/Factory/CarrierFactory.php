@@ -13,20 +13,20 @@ use LuTauch\App\Model\Carrier\Ppl;
 class CarrierFactory extends BaseCarrierFactory
 {
     /**
-     * @param string $name
+     * @param $name
      * @return CeskaPosta|Dpd|Ppl|Zasilkovna
      * @throws \NonExistingCarrierException
      */
     public function createCarrier($name)
     {
         switch ($name) {
-            case "CeskaPosta":
+            case "Česká pošta":
                 return new CeskaPosta();
-            case "Dpd":
+            case "DPD":
                 return new Dpd();
-            case "Ppl":
+            case "PPL":
                 return new Ppl();
-            case "Zasilkovna":
+            case "Zásilkovna":
                 return new Zasilkovna();
             default:
                 throw new \NonExistingCarrierException();

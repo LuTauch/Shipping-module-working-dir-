@@ -6,6 +6,7 @@ class Packet
 {
     private $ID;
     private $receiver;
+    //zatim jen hmotnost
     private $size;
     private $cod;
     private $eshop;
@@ -13,12 +14,6 @@ class Packet
     private $service;
 
 
-    public function __construct($receiver, $cod, $size)
-    {
-        $this->receiver = $receiver;
-        $this->cod = $cod;
-        $this->size = $size;
-    }
 
     /**
      * @return mixed

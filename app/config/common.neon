@@ -27,7 +27,13 @@ services:
 	ShipmentFormSecond:
 	    class: LuTauch\App\Forms\ShipmentFormSecond
 
+
 	- LuTauch\App\Model\CarrierModel
 	- LuTauch\App\Model\OptionsModel
 	- LuTauch\App\Model\Options
-	- LuTauch\App\Model\OrderAcceptance
+	- LuTauch\App\Model\Factory\CarrierFactory
+	- LuTauch\App\Model\PacketItems\Packet
+	- LuTauch\App\Model\PacketItems\Cod
+	- LuTauch\App\Model\PacketItems\Size
+	- LuTauch\App\Model\PacketItems\Receiver
+	- LuTauch\App\Model\OrderAcceptance(%eshop, %countryCode%, %currency%)

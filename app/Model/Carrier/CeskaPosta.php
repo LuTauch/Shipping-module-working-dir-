@@ -4,6 +4,7 @@ namespace LuTauch\App\Model\Carrier;
 
 use LuTauch\App\Model\ICarrier;
 use LuTauch\App\Model\PacketItems\Packet;
+use Tracy\Debugger;
 
 
 class CeskaPosta implements ICarrier
@@ -12,6 +13,7 @@ class CeskaPosta implements ICarrier
     public function processOrder($service, Packet $packet)
     {
         // TODO: Implement processOrder() method.
-
+        Debugger::barDump('aaa');
+        return true;
     }
 }
