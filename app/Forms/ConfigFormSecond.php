@@ -69,3 +69,11 @@ class ConfigFormSecond extends BaseComponent
         $this->presenter->redirect('Configuration:');
     }
 }
+
+interface  IConfigFormSecondFactory
+{
+    /**
+     * @return ConfigFormSecond
+     */
+    public function create();
+}

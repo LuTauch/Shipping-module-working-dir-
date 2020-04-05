@@ -17,7 +17,7 @@ use Tracy\Debugger;
 class ShipmentFormSecond extends BaseComponent
 {
     /**
-     * @var serviceids ids of services to be selected
+     * @var array $serviceIds ids of services to be selected
      */
     private $serviceIds;
 
@@ -30,20 +30,15 @@ class ShipmentFormSecond extends BaseComponent
     /**
      * ConfigFormSecond constructor (dependency handover)
      * @param CarrierModel $carrierModel
+     * @param array $serviceIds
      */
     public function __construct(CarrierModel $carrierModel)
     {
         $this->carrierModel = $carrierModel;
+
     }
 
-    /**
-     * Sets service ids
-     * @param $serviceIds
-     */
-    public function setServiceIds($serviceIds)
-    {
-        $this->serviceIds = $serviceIds;
-    }
+
 
 
 
@@ -93,4 +88,21 @@ class ShipmentFormSecond extends BaseComponent
 
 
     }
+
+    /**
+     * @param array $serviceIds
+     */
+    public function setServiceIds(array $serviceIds): void
+    {
+        $this->serviceIds = $serviceIds;
+    }
+}
+
+interface  IShipmentFormSecondFactory
+{
+    /**
+     * @param array $serviceIds
+     * @return ShipmentFormSecond
+     */
+    public function create();
 }

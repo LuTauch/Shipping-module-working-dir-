@@ -27,7 +27,8 @@ services:
 	ShipmentFormSecond:
 	    class: LuTauch\App\Forms\ShipmentFormSecond
 
-
+	- LuTauch\App\Forms\IShipmentFormSecondFactory
+	- LuTauch\App\Forms\IShipmentFormFirstFactory
 	- LuTauch\App\Model\CarrierModel
 	- LuTauch\App\Model\OptionsModel
 	- LuTauch\App\Model\Options
