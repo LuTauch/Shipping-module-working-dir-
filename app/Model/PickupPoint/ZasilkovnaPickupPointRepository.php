@@ -27,7 +27,7 @@ class ZasilkovnaPickupPointRepository extends Repository
             $this->findAll()->delete();
 
             // import nového obsahu z načteného xml feedu
-            foreach ($data->row as $row) {
+            foreach ($data as $row) {
                 // sestavení kompletního záznamu řádku tabulky
                 $dataRow = [
                     'id' => $row->id,
@@ -38,8 +38,10 @@ class ZasilkovnaPickupPointRepository extends Repository
                     'directions' => isset($row->directions) ? $row->directions : null,
                     'zasilkovna_url' => isset($row->zasilkovna_url) ? $row->zasilkovna_url : $row->url,
                     'country' => $row->country,
-                    'active' => isset($row->active) ? $row->active : null,
+                    'active' => isset($row->active) ? $row->active : 1,
                 ];
+
+                //throw new \Exception('prusvih!');
 
                 $this->insert($dataRow);
 
