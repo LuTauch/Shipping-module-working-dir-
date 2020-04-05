@@ -9,9 +9,8 @@ class CzechPostPickupPoint
 {
     /** lokální kopie xml feedu pro zpracování xml feedu */
     //TODO - prepsat na absolutní path
-    const POST_OFFICE_TEMP_FILE = 'C:\xampp\htdocs\eshop\vendor\lu-tauch\shipping-module\temp/napostu.xml';
-    // const POST_OFFICE_TEMP_FILE = APP_DIR . '/.../temp/napostu.xml';
-    //vendor/lu-tauch/shipping-module/temp
+    //const POST_OFFICE_TEMP_FILE = 'C:\xampp\htdocs\eshop\vendor\lu-tauch\shipping-module\temp/napostu.xml';
+    const POST_OFFICE_TEMP_FILE = __DIR__ . '/../temp/napostu.xml';
 
     private $pickupPointDownloader;
     private $pickupPointParser;

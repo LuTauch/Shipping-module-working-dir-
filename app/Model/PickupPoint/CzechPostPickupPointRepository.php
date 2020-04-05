@@ -16,7 +16,7 @@ class CzechPostPickupPointRepository extends Repository
         }
 
         try {
-            $this->$this->database->beginTransaction();
+            $this->database->beginTransaction();
 
             // smazání původního obsahu tabulky
             $this->findAll()->delete();
@@ -38,10 +38,10 @@ class CzechPostPickupPointRepository extends Repository
 
             }
 
-            $this->$this->database->commit();
+            $this->database->commit();
         } catch (\Nette\Database\DriverException $ex) {
             Debugger::log('Import xml feedu poboček češké pošty selhal s chybou: ' . $ex->getMessage());
-            $this->$this->database->rollBack();
+            $this->database->rollBack();
             throw $ex;
         }
 

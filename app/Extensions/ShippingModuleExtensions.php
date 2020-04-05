@@ -3,20 +3,8 @@
 
 namespace LuTauch\App\Extensions;
 
-
-use LuTauch\App\Forms\IConfigFormFirstFactory;
-use LuTauch\App\Forms\IConfigFormSecondFactory;
-use LuTauch\App\Forms\IShipmentFormFirstFactory;
-use LuTauch\App\Forms\IShipmentFormSecondFactory;
-use LuTauch\App\Model\CarrierModel;
-use LuTauch\App\Model\Factory\CarrierFactory;
-use LuTauch\App\Model\Options;
-use LuTauch\App\Model\OptionsModel;
 use LuTauch\App\Model\OrderAcceptance;
-use LuTauch\App\Model\PacketItems\Cod;
-use LuTauch\App\Model\PacketItems\Packet;
-use LuTauch\App\Model\PacketItems\Receiver;
-use LuTauch\App\Model\PacketItems\Size;
+use LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPoint;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceCreationException;
 
@@ -26,61 +14,73 @@ class ShippingModuleExtensions extends CompilerExtension
     const ESHOP = 'eshop';
     const CURRENCY ='currency';
     const COUNTRY_CODE = 'countryCode';
+    const ZASILKOVNA_API_KEY = 'zasilkovnaApiKey';
+    const ZASILKOVNA_URL = 'zasilkovnaUrl';
 
     const REQUIRED_PARAMS = [
         self::ESHOP,
         self::CURRENCY,
-        self::COUNTRY_CODE
+        self::COUNTRY_CODE,
+        self::ZASILKOVNA_URL,
+        self::ZASILKOVNA_API_KEY
     ];
 
     private $eshop;
     private $currency;
     private $countryCode;
+    private $zasilkovnaUrl;
+    private $zasilkovnaApiKey;
 
 
     public function loadConfiguration() {
         $builder = $this->getContainerBuilder();
         $this->setUpParams();
 
-        $builder->addDefinition($this->prefix('LuTauch.OptionsModel'))
-            ->setFactory(OptionsModel::class);
+//        $builder->addDefinition($this->prefix('LuTauch.OptionsModel'))
+//            ->setFactory(OptionsModel::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.CarrierModel'))
+//            ->setFactory(CarrierModel::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.ShipmentFormFirst'))
+//            ->setClass(IShipmentFormFirstFactory::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.ShipmentFormSecond'))
+//            ->setClass(IShipmentFormSecondFactory::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.ConfigFormFirst'))
+//            ->setClass(IConfigFormFirstFactory::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.ConfigFormSecond'))
+//            ->setClass(IConfigFormSecondFactory::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.Options'))
+//            ->setFactory(Options::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.CarrierFactory'))
+//            ->setFactory(CarrierFactory::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.Packet'))
+//            ->setFactory(Packet::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.Cod'))
+//            ->setFactory(Cod::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.Size'))
+//            ->setFactory(Size::class);
+//
+//        $builder->addDefinition($this->prefix('LuTauch.Receiver'))
+//            ->setFactory(Receiver::class);
 
-        $builder->addDefinition($this->prefix('LuTauch.CarrierModel'))
-            ->setFactory(CarrierModel::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.ShippingFormFirst'))
-            ->setFactory(IShipmentFormFirstFactory::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.ShippingFormSecond'))
-            ->setFactory(IShipmentFormSecondFactory::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.ConfigFormFirst'))
-            ->setFactory(IConfigFormFirstFactory::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.ConfigFormSecond'))
-            ->setFactory(IConfigFormSecondFactory::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.Options'))
-            ->setFactory(Options::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.CarrierFactory'))
-            ->setFactory(CarrierFactory::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.Packet'))
-            ->setFactory(Packet::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.Cod'))
-            ->setFactory(Cod::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.Size'))
-            ->setFactory(Size::class);
-
-        $builder->addDefinition($this->prefix('LuTauch.Receiver'))
-            ->setFactory(Receiver::class);
+        $this->compiler->loadConfig(__DIR__ . '/../config/common.neon');
 
         $builder->addDefinition($this->prefix('LuTauch.OrderAcceptance'))
             ->setFactory(OrderAcceptance::class)
         ->setArguments([$this->eshop, $this->countryCode, $this->currency]);
+
+        $builder->addDefinition($this->prefix('LuTauch.ZasilkovnaPickupPoint'))
+            ->setFactory(ZasilkovnaPickupPoint::class)
+            ->setArguments([$this->zasilkovnaApiKey, $this->zasilkovnaUrl]);
     }
 
     public function setUpParams(){
@@ -95,6 +95,8 @@ class ShippingModuleExtensions extends CompilerExtension
         $this->eshop = $params[self::ESHOP];
         $this->currency = $params[self::CURRENCY];
         $this->countryCode = $params[self::COUNTRY_CODE];
+        $this->zasilkovnaApiKey = $params[self::ZASILKOVNA_API_KEY];
+        $this->zasilkovnaUrl = $params[self::ZASILKOVNA_URL];
     }
 
 

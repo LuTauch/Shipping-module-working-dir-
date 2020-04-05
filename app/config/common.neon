@@ -1,34 +1,8 @@
-parameters:
-
-
-includes:
-    - accessData.neon
-    - eshop.neon
-
-application:
-	errorPresenter: Error
-	mapping:
-		*: LuTauch\App\*Module\Presenters\*Presenter
-
-
-session:
-	expiration: 14 days
-
-
 services:
-	router: LuTauch\App\Router\RouterFactory::createRouter
-
-	ConfigFormFirst:
-	    class: LuTauch\App\Forms\ConfigFormFirst
-	ConfigFormSecond:
-	    class: LuTauch\App\Forms\ConfigFormSecond
-	ShipmentFormFirst:
-	    class: LuTauch\App\Forms\ShipmentFormFirst
-	ShipmentFormSecond:
-	    class: LuTauch\App\Forms\ShipmentFormSecond
-
 	- LuTauch\App\Forms\IShipmentFormSecondFactory
 	- LuTauch\App\Forms\IShipmentFormFirstFactory
+	- LuTauch\App\Forms\IConfigFormFirstFactory
+	- LuTauch\App\Forms\IConfigFormSecondFactory
 	- LuTauch\App\Model\CarrierModel
 	- LuTauch\App\Model\OptionsModel
 	- LuTauch\App\Model\Options
@@ -37,4 +11,10 @@ services:
 	- LuTauch\App\Model\PacketItems\Cod
 	- LuTauch\App\Model\PacketItems\Size
 	- LuTauch\App\Model\PacketItems\Receiver
-	- LuTauch\App\Model\OrderAcceptance(%eshop, %countryCode%, %currency%)
+	- LuTauch\App\Model\PickupPoint\CzechPostPickupPoint
+	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointDownloader
+	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointParser
+	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointRepository
+	- LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPoint
+	- LuTauch\app\Model\Repository\ZasilkovnaPickupPointRepository
+
