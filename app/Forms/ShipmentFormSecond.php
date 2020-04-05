@@ -98,11 +98,3 @@ class ShipmentFormSecond extends BaseComponent
     }
 }
 
-interface  IShipmentFormSecondFactory
-{
-    /**
-     * @param array $serviceIds
-     * @return ShipmentFormSecond
-     */
-    public function create();
-}

@@ -93,12 +93,3 @@ class ShipmentFormFirst extends BaseComponent
     }
 
 }
-
-interface  IShipmentFormFirstFactory
-{
-    /**
-     * @param array $serviceIds
-     * @return ShipmentFormFirst
-     */
-    public function create();
-}

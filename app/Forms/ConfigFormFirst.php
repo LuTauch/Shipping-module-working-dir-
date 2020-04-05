@@ -88,11 +88,3 @@ class ConfigFormFirst extends BaseComponent
     }
 
 }
-
-interface  IConfigFormFirstFactory
-{
-    /**
-     * @return ConfigFormFirst
-     */
-    public function create();
-}
