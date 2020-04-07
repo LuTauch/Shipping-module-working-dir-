@@ -13,7 +13,6 @@ class CeskaPosta implements ICarrier
     public function processOrder($service, Packet $packet)
     {
         // TODO: Implement processOrder() method.
-        Debugger::barDump('aaa');
-        return true;
+        return TRUE;
     }
 }
