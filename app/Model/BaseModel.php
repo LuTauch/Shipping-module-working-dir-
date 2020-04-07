@@ -25,6 +25,11 @@ abstract class BaseModel
         $this->database = $database;
     }
 
+    public function findAll()
+    {
+        return $this->database->table($this->getTableName());
+    }
+
     /**
      * Defines a general sql query 'SELECT FROM table WHERE by'
      * @param array $by condition for the query
@@ -34,6 +39,7 @@ abstract class BaseModel
     {
         return $this->database->table($this->getTableName())->where($by);
     }
+
 
     /**
      * Gets table name

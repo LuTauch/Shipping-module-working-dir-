@@ -2,10 +2,11 @@
 
 namespace LuTauch\App\Forms;
 
-use LuTauch\App\Model\Options;
-use Nette\Application\UI;
 use LuTauch\App\Model\CarrierModel;
-use Nette\ComponentModel\IComponent;
+use LuTauch\App\Model\CzechPostPickupPointModel;
+use LuTauch\App\Model\ZasilkovnaPickupPointModel;
+use Nette\Application\Responses\JsonResponse;
+use Nette\Application\UI;
 use Nette\Forms\Form;
 use Tracy\Debugger;
 
@@ -26,23 +27,34 @@ class ShipmentFormSecond extends BaseComponent
      */
     private $carrierModel;
 
+    /**
+     * @var CzechPostPickupPointModel
+     */
+    private $czechPostPickupPointModel;
+
+    /**
+     * @var ZasilkovnaPickupPointModel
+     */
+    private $zasilkovnaPickupPointModel;
+
+    private $pickupPlaceInput;
 
     /**
      * ConfigFormSecond constructor (dependency handover)
      * @param CarrierModel $carrierModel
      * @param array $serviceIds
      */
-    public function __construct(CarrierModel $carrierModel)
+    public function __construct(CarrierModel $carrierModel, CzechPostPickupPointModel $czechPostPickupPointModel, ZasilkovnaPickupPointModel $zasilkovnaPickupPointModel)
     {
         $this->carrierModel = $carrierModel;
-
+        $this->czechPostPickupPointModel = $czechPostPickupPointModel;
+        $this->zasilkovnaPickupPointModel = $zasilkovnaPickupPointModel;
     }
 
 
-
-
-
-    /** Creates a configuration form with a checkboxlist containing service names */
+    /** Creates a configuration form with a checkboxlist containing service names
+     * @throws UI\InvalidLinkException
+     */
     public function createComponentForm(): UI\Form
     {
         $form = new UI\Form();
@@ -60,7 +72,7 @@ class ShipmentFormSecond extends BaseComponent
 
         $form->addRadioList('services', 'Služby', $options)->setRequired();
 
-        $form->addText('pickup_place', 'Odběrné místo')
+        $this->pickupPlaceInput = $form->addText('pickup_place', 'Odběrné místo')
             ->addConditionOn($form['services'], Form::IS_NOT_IN, $servicesWithPickup)
                 ->addRule(Form::BLANK, 'Smažte prosím odběrné místo. Tento typ dopravce jej nepodporuje.')
             ->endCondition()
@@ -74,6 +86,19 @@ class ShipmentFormSecond extends BaseComponent
         $form->addSubmit('submit', 'Další');
         $form->onSuccess[] = [$this, 'shipmentFormSecondSucceeded'];
         return $form;
+    }
+
+    public function handleAutocomplete($carrier) {
+
+        if ($carrier == 'ceska_posta') {
+            $res = $this->czechPostPickupPointModel->findAll()->fetchAll();
+        } else if ($carrier == 'zasilkovna') {
+          $res = $this->zasilkovnaPickupPointModel->findAll()->fetchAll();
+        }
+        $this->sendResponse(new JsonResponse($res));
+
+        $this->terminate();
+
     }
 
     /**

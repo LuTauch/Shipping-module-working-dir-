@@ -6,6 +6,8 @@ services:
 	- LuTauch\App\Model\CarrierModel
 	- LuTauch\App\Model\OptionsModel
 	- LuTauch\App\Model\Options
+	- LuTauch\App\Model\ZasilkovnaPickupPointModel
+	- LuTauch\App\Model\CzechPostPickupPointModel
 	- LuTauch\App\Model\Factory\CarrierFactory
 	- LuTauch\App\Model\PacketItems\Packet
 	- LuTauch\App\Model\PacketItems\Cod

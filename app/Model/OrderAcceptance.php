@@ -65,7 +65,6 @@ class OrderAcceptance
         $this->setReceiver($receiverData);
         $this->setCod($codValue);
         $this->setPacket($this->counter, $this->receiver, $this->cod, $weight);
-
         $this->processServiceName($name);
 
         try {

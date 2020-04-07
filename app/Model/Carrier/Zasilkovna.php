@@ -10,7 +10,7 @@ class Zasilkovna implements ICarrier
 
     public function processOrder($service, Packet $packet)
     {
-        // TODO: Implement processOrder() method.
+        return TRUE;
 
     }
 }
