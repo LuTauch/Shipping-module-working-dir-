@@ -1,3 +1,5 @@
+
+
 {form form}
     {capture $autocompleteLink}
         {link autocomplete!}
@@ -12,19 +14,31 @@
         <legend>Doprava</legend>
         <div class="form-row">
             <div class="form-group col-sm-12">
-                {label services class=>'font-weight-bold'/}
+                {label deliveryOption class=>'font-weight-bold'/}
                 <br>
-                {input services class=>'form-control'}
+                {input deliveryOption class=>'form-control'}
             </div>
         </div>
-        <div class="form-row ui-widget">
+        <div class="form-row">
             <div class="form-group col-sm-12">
-                {label pickup_place class=>'font-weight-bold'/}
+                {label additionalService class=>'font-weight-bold'/}
                 <br>
-                {input pickup_place class=>'form-control', data-url=>$autocompleteLink}
+                {input additionalService class=>'form-control'}
             </div>
         </div>
     </fieldset>
-    <a class="btn btn-primary" href="{plink Order:payment}">Zpět na výběr platby</a>
+    <fieldset>
+        {snippet pickup_place_input}
+            <div class="form-row ui-widget">
+                <div class="form-group col-sm-12">
+                    {label pickup_place class=>'font-weight-bold'/}
+                    <br>
+                    {input pickup_place class=>'form-control', data-url=>$autocompleteLink}
+                </div>
+            </div>
+        {/snippet}
+    </fieldset>
+    <a class="btn btn-primary" href="{plink Shipment:}">Zpět na výběr dopravy</a>
     {input submit class=>"btn btn-primary"}
+
 {/form}

@@ -1,1 +1,28 @@
-{control form}
+{form form}
+    <fieldset>
+        <legend>Specifikace typu zásilek a služeb pro nalezení optimálních dopravců:</legend>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label packet class=>'font-weight-bold'/}
+                <br>
+                {input packet class=>'form-control'}
+            </div>
+            <div class="form-group col-sm-12">
+                {label deliveryOption class=>'font-weight-bold'/}
+                <br>
+                {input deliveryOption class=>'form-control'}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label additionalService class=>'font-weight-bold'/}
+                <br>
+                {input additionalService class=>'form-control'}
+            </div>
+        </div>
+    </fieldset>
+    <a class="btn btn-primary" href="{plink Configuration:Reset}">Vymazat nastavení</a>
+    {input submit class=>"btn btn-primary"}
+
+
+{/form}

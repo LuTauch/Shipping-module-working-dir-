@@ -27,6 +27,10 @@ class ConfigFormFirst extends BaseComponent
         $this->carrierModel = $carrierModel;
     }
 
+    public function resetConfiguration(){
+        $this->carrierModel->resetSelectedServiceIds();
+    }
+
     /**
      * Creates a configuration component consisting of 3 option groups (checkboxlists).
      * @return UI\Form
@@ -56,7 +60,7 @@ class ConfigFormFirst extends BaseComponent
             'cash_on_delivery' => 'Dobírka',
             'weekend_delivery' => 'Víkendové doručení',
             'evening_delivery' => 'Večerní doručení',
-            //'express_delivery' => 'Expresní doručení',
+            'express_delivery' => 'Expresní doručení',
         ]);
 
         $form->addSubmit('submit', 'Odeslat');
@@ -74,6 +78,7 @@ class ConfigFormFirst extends BaseComponent
      */
     public function configFormSucceeded(UI\Form $form, \stdClass $values)
     {
+
         $availableServiceIds = $this->carrierModel->findServiceIds($values);
 
         if($availableServiceIds === [])

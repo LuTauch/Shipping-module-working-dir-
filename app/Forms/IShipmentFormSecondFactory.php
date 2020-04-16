@@ -7,7 +7,7 @@ namespace LuTauch\App\Forms;
 interface IShipmentFormSecondFactory
 {
     /**
-     * @return ShipmentFormSecond
+     * @return ShipmentFormFirst
      */
     public function create();
 

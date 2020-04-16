@@ -12,7 +12,7 @@ services:
 	- LuTauch\App\Model\PacketItems\Packet
 	- LuTauch\App\Model\PacketItems\Cod
 	- LuTauch\App\Model\PacketItems\Size
-	- LuTauch\App\Model\PacketItems\Receiver
+	- LuTauch\App\Model\PacketItems\Recipient
 	- LuTauch\App\Model\PickupPoint\CzechPostPickupPoint
 	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointDownloader
 	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointParser

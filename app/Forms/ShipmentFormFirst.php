@@ -2,28 +2,31 @@
 
 namespace LuTauch\App\Forms;
 
-use App\Model\CartSession;
 use LuTauch\App\Model\CarrierModel;
+use LuTauch\App\Model\CzechPostPickupPointModel;
 use LuTauch\App\Model\Options;
+use LuTauch\App\Model\ZasilkovnaPickupPointModel;
+use Nette\Application\Responses\JsonResponse;
 use Nette\Application\UI;
 use Nette\Forms\Form;
-use Tracy\Debugger;
-
 
 /**
- * Class ConfigFormFirst represents first step in the configuration process (e-shop categorisation and service preference).
- * It defines a configuration form and a way to process the data sent from it.
+ * Class ConfigFormSecond represents second step in the configuration process (final service selection).
+ * It defines the configuration form and a way to process the data sent from it.
  * @package App\Forms
  */
 class ShipmentFormFirst extends BaseComponent
 {
-    /** @var CarrierModel */
-    private $carrierModel;
+    /**
+     * @var array $serviceIds ids of services to be selected
+     */
+    private $serviceIds;
 
     /**
-     * @var Options
+     * @var CarrierModel
      */
-    private $options;
+    private $carrierModel;
+
 
     /**
      * ConfigFormFirst constructor. important for dependency handover.
@@ -35,61 +38,52 @@ class ShipmentFormFirst extends BaseComponent
         $this->carrierModel = $carrierModel;
     }
 
-    public function setOption(Options $options) {
-        $this->options = $options;
+    /**
+     * @param array $serviceIds
+     */
+    public function setServiceIds(array $serviceIds): void
+    {
+        $this->serviceIds = $serviceIds;
     }
 
-    /**
-     * Creates a configuration component consisting of 3 option groups (checkboxlists).
-     * @return UI\Form
+
+    /** Creates a configuration form with a checkboxlist containing service names
+     * @throws UI\InvalidLinkException
      */
-    protected function createComponentForm(): UI\Form
+    public function createComponentForm(): UI\Form
     {
-
         $form = new UI\Form();
-        $form->setMethod('POST');
+        //getting service names from service ids
 
-        $form = $this->extendForm($form);
+        $services = $this->carrierModel->getServicesByIds($this->serviceIds)->fetchAll();
+
+        //sluzby
+        $options = [];
+        foreach ($services as $item)
+        {
+            $options[$item->service_id] = \Nette\Utils\Html::el('span')->setText($item->complete_name . ' (' . $item->price . ' Kč)')->addAttributes(['data-text' => $item->service_id]);
+        }
+
+        $form->addRadioList('services', 'Služby', $options)->setRequired();
 
         $form->addSubmit('submit', 'Další');
-        //setting on success method
-        $form->onSuccess[] = [$this, 'shipmentFormSucceeded'];
-        return $form;
-    }
-
-    public function extendForm(Form $form)
-    {
-        //toto dat mozna do samostatneho kontejneru?
-        $delivery = [
-            'address_delivery' => 'Na adresu',
-            'pickup_delivery' => 'Na výdejní místo',
-        ];
-        $form->addCheckboxList('deliveryOption', 'Způsob doručení:', $delivery);
-        $form->addCheckboxList('additionalService', 'Doplňkové služby', [
-            'weekend_delivery' => 'Víkendové doručení',
-            'evening_delivery' => 'Večerní doručení',
-            //'express_delivery' => 'Expresní doručení',
-        ]);
-
+        $form->onSuccess[] = [$this, 'shipmentFormFirstSucceeded'];
         return $form;
     }
 
     /**
-     * Is being called after successful submission of the first configuration form. It processes the data from the form, gets service ids available
-     * for the user from the database and sends them to the second configuration form (by redirect).
+     * Is being called after successful submission of the second configuration form. It processes the data received from
+     * the form, shows a message for the user and redirects him.
      * @param UI\Form $form
      * @param \stdClass $values
      * @throws \Nette\Application\AbortException
      */
-    public function shipmentFormSucceeded(UI\Form $form, \stdClass $values)
+    public function shipmentFormFirstSucceeded(UI\Form $form, \stdClass $values)
     {
-        //Debugger::barDump( $this->carrierModel->findServiceIdsFromSelected($this->options->getWeight(), $values));die;
-        $availableServiceIds = $this->carrierModel->findServiceIdsFromSelected($this->options->getWeight(), $values);
-        $this->presenter->redirect('Shipment:step2', [$availableServiceIds]);
-
 
 
 
     }
 
 }
+

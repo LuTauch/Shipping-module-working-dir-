@@ -3,10 +3,10 @@
 
 namespace LuTauch\App\Model\PickupPoint;
 
-use LuTauch\app\Model\Repository\Repository;
+use LuTauch\App\Model\BaseModel;
 use Tracy\Debugger;
 
-class CzechPostPickupPointRepository extends Repository
+class CzechPostPickupPointRepository extends BaseModel
 {
 
     public function saveXml($xmlRootObject)

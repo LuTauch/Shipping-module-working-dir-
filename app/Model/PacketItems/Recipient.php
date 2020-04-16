@@ -1,7 +1,7 @@
 <?php
 
 namespace LuTauch\App\Model\PacketItems;
-class Receiver
+class Recipient
 {
     private $name;
     private $surname;
@@ -10,6 +10,7 @@ class Receiver
     private $countryCode;
     private $zipCode;
     private $city;
+    private $cityPart;
     private $street;
     private $houseNo;
 
@@ -156,6 +157,22 @@ class Receiver
     public function getHouseNo()
     {
         return $this->houseNo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCityPart()
+    {
+        return $this->cityPart;
+    }
+
+    /**
+     * @param mixed $cityPart
+     */
+    public function setCityPart($cityPart): void
+    {
+        $this->cityPart = $cityPart;
     }
 
 

@@ -5,6 +5,7 @@ namespace LuTauch\app\Model\Repository;
 
 
 use Nette\Database\Context;
+use Nette\Neon\Encoder;
 
 abstract class Repository
 {
@@ -34,7 +35,6 @@ abstract class Repository
     public function insert($data)
     {
         //$data = Encoding::normalizeUtf8String($data);
-
         return $this->database->table($this->getTableName())->insert($data);
     }
 
@@ -52,6 +52,7 @@ abstract class Repository
         }
 
         //$insert = Encoding::normalizeUtf8String($insert);
+
 
         return $this->database->query(
             'INSERT INTO ' . $this->getTableName() . ' ? ON DUPLICATE KEY UPDATE ?',

@@ -1,1 +1,19 @@
-{control form}
+{form form}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" n:if="$form->hasErrors()">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span n:foreach="$form->errors as $error">{$error}</span>
+    </div>
+    <fieldset>
+        <div class="form-row">
+            <div class="form-group col-sm-12">
+                {label services class=>'font-weight-bold'/}
+                <br>
+                {input services class=>'form-control'}
+            </div>
+        </div>
+    </fieldset>
+    <a class="btn btn-primary" href="{plink Configuration:reset}">Zpět na výběr parametrů</a>
+    {input save class=>"btn btn-primary"}
+{/form}

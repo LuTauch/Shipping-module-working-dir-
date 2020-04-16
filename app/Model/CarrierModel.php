@@ -49,8 +49,6 @@ class CarrierModel extends BaseModel
      */
     public function getServicesForCheckboxList($serviceIds)
     {
-        //Debugger::barDump($serviceIds);die;
-
         return $this->getServicesByIds($serviceIds)->fetchPairs('service_id', 'complete_name');
     }
 
@@ -86,21 +84,17 @@ class CarrierModel extends BaseModel
      * @param stdClass $values
      * @return array
      */
-    public function findServiceIdsFromSelected($weight, $values)
+    public function findServiceIdsFromSelected($weight)
     {
-        $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
+        /* $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
 
         if ($innerSql != '') {
             $innerSql = $innerSql . ' AND ';
         }
-
-
         $packetCategorySql = $this->optionsModel->getCategoryOfPacket($weight);
+        */
 
-        $sql = 'SELECT service_id FROM service WHERE ' . $innerSql . 'selected = 1 AND ' . $packetCategorySql;
-
-        $serviceIds = $this->database->query($sql)->fetchPairs(NULL, 'service_id');
-
+        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE selected = 1 AND max_weight > ?', $weight)->fetchPairs(NULL, 'service_id');
         return $serviceIds;
     }
 
@@ -125,7 +119,7 @@ class CarrierModel extends BaseModel
 
     public function getPriceOfService($id)
     {
-        return $this->database->query('SELECT price FROM service WHERE service_id = ?', $id)->fetchPairs(NULL, 'price');;
+        return $this->database->query('SELECT price FROM service WHERE service_id = ?', $id)->fetchPairs(NULL, 'price');
     }
 
     public function getServicesWithPickup()
@@ -135,6 +129,33 @@ class CarrierModel extends BaseModel
         ];
 
         return $this->findBy($by);
+    }
+
+    /**
+     * Updates column 'selected' in the table 'service'
+     * @return int
+     */
+    public function resetSelectedServiceIds()
+    {
+        $by = [
+            'selected' => 1
+        ];
+
+        $updateData = [
+            'selected' => 0
+        ];
+
+        return $this->findBy($by)->update($updateData);
+    }
+
+    public function findPacketType()
+    {
+        $by = [
+            'selected' => 1
+        ];
+
+        $res = $this->findBy($by)->fetchAll();
+        return $res;
     }
 
 

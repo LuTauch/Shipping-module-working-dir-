@@ -5,13 +5,14 @@ namespace LuTauch\App\Model\PacketItems;
 class Packet
 {
     private $ID;
-    private $receiver;
+    public $recipient;
     //zatim jen hmotnost
-    private $size;
-    private $cod;
+    public $size;
+    public $cod;
     private $eshop;
-    private $priceOption;
-    private $service;
+    private $serviceName;
+    private $additionalServices;
+
 
 
 
@@ -34,17 +35,17 @@ class Packet
     /**
      * @return mixed
      */
-    public function getReceiver()
+    public function getRecipient()
     {
-        return $this->receiver;
+        return $this->recipient;
     }
 
     /**
-     * @param mixed $receiver
+     * @param mixed $recipient
      */
-    public function setReceiver($receiver): void
+    public function setRecipient($recipient): void
     {
-        $this->receiver = $receiver;
+        $this->recipient = $recipient;
     }
 
     /**
@@ -98,35 +99,38 @@ class Packet
     /**
      * @return mixed
      */
-    public function getPriceOption()
+    public function getServiceName()
     {
-        return $this->priceOption;
+        return $this->serviceName;
     }
 
     /**
-     * @param mixed $priceOption
+     * @param mixed $serviceName
      */
-    public function setPriceOption($priceOption): void
+    public function setServiceName($serviceName): void
     {
-        $this->priceOption = $priceOption;
+        $this->serviceName = $serviceName;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getService()
+    public function getAdditionalServices()
     {
-        return $this->service;
+        return $this->additionalServices;
     }
 
     /**
-     * @param mixed $service
+     * @param array $additionalServices
      */
-    public function setService($service): void
+    public function setAdditionalServices($additionalServices): void
     {
-        $this->service = $service;
+        $this->additionalServices = [
+            'eveningDelivery' => $additionalServices['eveningDelivery'],
+            'weekendDelivery' => $additionalServices['weekendDelivery'],
+            'expressDelivery' => $additionalServices['expressDelivery'],
+        ];
     }
-
 
 
 }

@@ -8,6 +8,7 @@ class Options
 {
     private $weight = 0;
     private $ids = [];
+    private $service = '';
 
     /**
      * @return mixed
@@ -35,6 +36,21 @@ class Options
         $this->ids = $ids;
     }
 
+    /**
+     * @return string
+     */
+    public function getService(): string
+    {
+        return $this->service;
+    }
+
+    /**
+     * @param string $service
+     */
+    public function setService(string $service): void
+    {
+        $this->service = $service;
+    }
 
 
 }

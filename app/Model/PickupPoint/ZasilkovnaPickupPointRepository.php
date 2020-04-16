@@ -4,9 +4,10 @@
 namespace LuTauch\app\Model\Repository;
 
 
+use LuTauch\App\Model\BaseModel;
 use Tracy\Debugger;
 
-class ZasilkovnaPickupPointRepository extends Repository
+class ZasilkovnaPickupPointRepository extends BaseModel
 {
 
     protected function getTableName()

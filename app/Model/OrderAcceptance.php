@@ -4,14 +4,11 @@
 namespace LuTauch\App\Model;
 
 
-use Latte\Strict;
 use LuTauch\App\Model\Factory\CarrierFactory;
 use LuTauch\App\Model\PacketItems\Cod;
 use LuTauch\App\Model\PacketItems\Packet;
-use LuTauch\App\Model\PacketItems\Receiver;
-use LuTauch\App\Model\PacketItems\Size;
+use LuTauch\App\Model\PacketItems\Recipient;
 use Nette\Utils\Strings;
-use Tracy\Debugger;
 
 
 class OrderAcceptance
@@ -19,6 +16,8 @@ class OrderAcceptance
     private $carrierName;
 
     private $serviceName;
+
+    private $pickupPoint;
 
     private $carrier;
 
@@ -28,9 +27,7 @@ class OrderAcceptance
 
     private $cod;
 
-    private $receiver;
-
-    private $counter;
+    private $recipient;
 
     private $eshop;
     private $currency;
@@ -39,33 +36,31 @@ class OrderAcceptance
 
     //tady proběhne úplně celý zpracování objednávky
 
-    public function __construct($eshop, $countryCode, $currency, CarrierFactory $carrierFactory, Packet $packet, Receiver $receiver, Cod $cod)
+    public function __construct($eshop, $countryCode, $currency, CarrierFactory $carrierFactory, Packet $packet, Recipient $recipient, Cod $cod)
     {
         $this->eshop = $eshop;
         $this->countryCode = $countryCode;
         $this->currency = $currency;
         $this->carrierFactory = $carrierFactory;
         $this->packet = $packet;
-        $this->receiver = $receiver;
+        $this->recipient = $recipient;
         $this->cod = $cod;
-        $this->counter = 0;
-
     }
 
     /**
-     * @param array $receiverData
+     * @param int $id
+     * @param array $recipient
      * @param string $weight
      * @param string $codValue
      * @param string $name
      * @return bool order processed successfully
      */
-    public function acceptOrderFromEshop(array $receiverData, string $weight, string $codValue, string $name)
+    public function acceptOrderFromEshop(array $recipient, array $orderData, array $additionalServices, array $serviceData)
     {
-        $this->counter++;
-        $this->setReceiver($receiverData);
-        $this->setCod($codValue);
-        $this->setPacket($this->counter, $this->receiver, $this->cod, $weight);
-        $this->processServiceName($name);
+        $this->setRecipientData($recipient);
+        $this->setCodData($orderData);
+        $this->setPacketData($this->recipient, $this->cod, $orderData, $additionalServices);
+        $this->processServiceData($serviceData);
 
         try {
             $this->carrier = $this->carrierFactory->createCarrier($this->carrierName);
@@ -75,37 +70,42 @@ class OrderAcceptance
         return $this->carrier->processOrder($this->serviceName, $this->packet);
     }
 
-    public function processServiceName($name): void
+    public function processServiceData($serviceData): void
     {
-        $res = Strings::split($name, '~ - \s*~');
+        $res = Strings::split($serviceData['serviceName'], '~ - \s*~');
         $this->carrierName = $res[0];
         $this->serviceName = $res[1];
+        $this->pickupPoint = $serviceData['pickupPoint'];
     }
 
-    public function setReceiver(array $receiverData): void
+
+
+    public function setRecipientData(array $recipientData): void
     {
-        $this->receiver->setName($receiverData['name']);
-        $this->receiver->setSurname($receiverData['surname']);
-        $this->receiver->setPhoneNo($receiverData['phone']);
-        $this->receiver->setEmail($receiverData['email']);
-        $this->receiver->setStreet($receiverData['street']);
-        $this->receiver->setHouseNo($receiverData['nr']);
-        $this->receiver->setCity($receiverData['city']);
-        $this->receiver->setZipCode($receiverData['zip']);
-        $this->receiver->setCountryCode($this->countryCode);
+        $this->recipient->setName($recipientData['name']);
+        $this->recipient->setSurname($recipientData['surname']);
+        $this->recipient->setPhoneNo($recipientData['phone']);
+        $this->recipient->setEmail($recipientData['email']);
+        $this->recipient->setStreet($recipientData['street']);
+        $this->recipient->setHouseNo($recipientData['nr']);
+        $this->recipient->setCity($recipientData['city']);
+        $this->recipient->setCityPart($recipientData['cityPart']);
+        $this->recipient->setZipCode($recipientData['zip']);
+        $this->recipient->setCountryCode($this->countryCode);
     }
 
-    public function setCod($codValue): void
+    public function setCodData($orderData): void
     {
-        $this->cod->setValue($codValue);
+        $this->cod->setValue($orderData['codValue']);
         $this->cod->setCurrency($this->currency);
     }
 
-    public function setPacket(int $id, Receiver $receiver, Cod $cod, string $weight)
+    public function setPacketData(Recipient $recipient, Cod $cod, array $orderData, array $additionalServices)
     {
+        $this->packet->setID($orderData['orderId']);
         $this->packet->setCod($cod);
-        $this->packet->setReceiver($receiver);
-        $this->packet->setSize($weight);
-        $this->packet->setID($id);
+        $this->packet->setRecipient($recipient);
+        $this->packet->setSize($orderData['size']);
+        $this->packet->setAdditionalServices($additionalServices);
     }
 }
