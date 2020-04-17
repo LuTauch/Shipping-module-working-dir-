@@ -3,17 +3,13 @@
 namespace LuTauch\App\Forms;
 
 use LuTauch\App\Model\CarrierModel;
-use LuTauch\App\Model\CzechPostPickupPointModel;
 use LuTauch\App\Model\Options;
-use LuTauch\App\Model\ZasilkovnaPickupPointModel;
-use Nette\Application\Responses\JsonResponse;
 use Nette\Application\UI;
-use Nette\Forms\Form;
+use Tracy\Debugger;
 
 /**
- * Class ConfigFormSecond represents second step in the configuration process (final service selection).
- * It defines the configuration form and a way to process the data sent from it.
- * @package App\Forms
+ * Class ShipmentFormFirst
+ * @package LuTauch\App\Forms
  */
 class ShipmentFormFirst extends BaseComponent
 {
@@ -54,7 +50,6 @@ class ShipmentFormFirst extends BaseComponent
     {
         $form = new UI\Form();
         //getting service names from service ids
-
         $services = $this->carrierModel->getServicesByIds($this->serviceIds)->fetchAll();
 
         //sluzby
@@ -67,19 +62,22 @@ class ShipmentFormFirst extends BaseComponent
         $form->addRadioList('services', 'Služby', $options)->setRequired();
 
         $form->addSubmit('submit', 'Další');
+        //onsubmit
         $form->onSuccess[] = [$this, 'shipmentFormFirstSucceeded'];
         return $form;
     }
 
     /**
-     * Is being called after successful submission of the second configuration form. It processes the data received from
-     * the form, shows a message for the user and redirects him.
      * @param UI\Form $form
      * @param \stdClass $values
      * @throws \Nette\Application\AbortException
      */
     public function shipmentFormFirstSucceeded(UI\Form $form, \stdClass $values)
     {
+       //vrati se mi id sluzby
+        $additionalServices = $this->carrierModel->findAdditionalServices($values->services);
+        $this->presenter->redirect('Shipment:step2', [$additionalServices]);
+
 
 
 

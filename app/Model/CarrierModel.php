@@ -49,6 +49,7 @@ class CarrierModel extends BaseModel
      */
     public function getServicesForCheckboxList($serviceIds)
     {
+
         return $this->getServicesByIds($serviceIds)->fetchPairs('service_id', 'complete_name');
     }
 
@@ -86,6 +87,8 @@ class CarrierModel extends BaseModel
      */
     public function findServiceIdsFromSelected($weight)
     {
+
+
         /* $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
 
         if ($innerSql != '') {
@@ -94,7 +97,9 @@ class CarrierModel extends BaseModel
         $packetCategorySql = $this->optionsModel->getCategoryOfPacket($weight);
         */
 
-        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE selected = 1 AND max_weight > ?', $weight)->fetchPairs(NULL, 'service_id');
+        $weight = $weight / 1000;
+
+        $serviceIds = $this->database->query('SELECT service_id FROM service WHERE selected = 1 AND max_weight >= ?', $weight)->fetchPairs(NULL, 'service_id');
         return $serviceIds;
     }
 
@@ -154,7 +159,28 @@ class CarrierModel extends BaseModel
             'selected' => 1
         ];
 
-        $res = $this->findBy($by)->fetchAll();
+        $res = $this->findBy($by)->select()->fetchAll();
+        return $res;
+    }
+
+    /**
+     * @return int|mixed
+     */
+    public function getMaxServiceWeight()
+    {
+        $max_weight = 0;
+        $res = $this->database->query('SELECT max_weight FROM service WHERE selected = 1')->fetchPairs(NULL, 'max_weight');
+
+        foreach ($res as $weight) {
+            if ($weight > $max_weight) {
+                $max_weight = $weight;
+            }
+        }
+        return $max_weight;
+    }
+
+    public function findAdditionalServices($serviceId) {
+        $res = $this->database->query('SELECT evening_delivery, weekend_delivery,  express_delivery FROM service WHERE service_id = ?', $serviceId)->fetchAll();
         return $res;
     }
 

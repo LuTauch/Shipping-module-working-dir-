@@ -12,16 +12,16 @@ use Nette\Forms\Form;
 
 
 /**
- * Class ConfigFormFirst represents first step in the configuration process (e-shop categorisation and service preference).
- * It defines a configuration form and a way to process the data sent from it.
- * @package App\Forms
+ * Class ShipmentFormSecond
+ * @package LuTauch\App\Forms
  */
 class ShipmentFormSecond extends BaseComponent
 {
 
-
-
-
+    /**
+     * @var array $additionalServices ids of services to be selected
+     */
+    private $additionalServices;
 
     /** @var CarrierModel */
     private $carrierModel;
@@ -54,6 +54,14 @@ class ShipmentFormSecond extends BaseComponent
         $this->carrierModel = $carrierModel;
         $this->czechPostPickupPointModel = $czechPostPickupPointModel;
         $this->zasilkovnaPickupPointModel = $zasilkovnaPickupPointModel;
+    }
+
+    /**
+     * @param array $additionalServices
+     */
+    public function setAdditionalService(array $additionalServices): void
+    {
+        $this->additionalServices = $additionalServices;
     }
 
 
