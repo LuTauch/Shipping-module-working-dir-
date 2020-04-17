@@ -74,9 +74,8 @@ class ShipmentFormFirst extends BaseComponent
      */
     public function shipmentFormFirstSucceeded(UI\Form $form, \stdClass $values)
     {
-       //vrati se mi id sluzby
-        $additionalServices = $this->carrierModel->findAdditionalServices($values->services);
-        $this->presenter->redirect('Shipment:step2', [$additionalServices]);
+        //Debugger::barDump($additionalServices);die;
+        $this->presenter->redirect('Shipment:step2', [$values->services]);
 
 
 

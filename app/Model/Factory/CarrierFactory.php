@@ -13,20 +13,29 @@ use LuTauch\App\Model\Carrier\Zasilkovna;
 use LuTauch\App\Model\Carrier\CeskaPosta;
 use LuTauch\App\Model\Carrier\Dpd;
 use LuTauch\App\Model\Carrier\Ppl;
+use LuTauch\App\Model\PacketItems\Sender;
 
 
 class CarrierFactory extends BaseCarrierFactory
 {
     /**
-     * @param $name
-     * @return CeskaPosta|Dpd|Geis|Gls|InTime|Ppl|TopTrans|Ulozenka|Zasilkovna
-     * @throws \NonExistingCarrierException
+     * @var Sender
      */
+    private $sender;
+
+    /**
+     * @param Sender $sender
+     */
+    public function __construct(Sender $sender)
+    {
+        $this->sender = $sender;
+    }
+
     public function createCarrier($name)
     {
         switch ($name) {
             case "Česká pošta":
-                return new CeskaPosta();
+                return new CeskaPosta($this->sender);
             case "Zásilkovna":
                 return new Zasilkovna();
             case "DPD":

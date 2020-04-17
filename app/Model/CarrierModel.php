@@ -180,8 +180,8 @@ class CarrierModel extends BaseModel
     }
 
     public function findAdditionalServices($serviceId) {
-        $res = $this->database->query('SELECT evening_delivery, weekend_delivery,  express_delivery FROM service WHERE service_id = ?', $serviceId)->fetchAll();
-        return $res;
+        return $this->findBy(['service_id'=>$serviceId])->select('evening_delivery, weekend_delivery, express_delivery')
+            ->fetch();
     }
 
 
