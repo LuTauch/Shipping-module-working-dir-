@@ -64,17 +64,17 @@ class CzechPostDoBalikovnyRepository extends BaseModel
     public function findByCity($city)
     {
         $by = [
-            'okres LIKE ?' => $city . '%'
+            'adresa LIKE ?' => '%' . $city . '%'
         ];
 
         return $this->findBy($by);
     }
 
     public function filterAddressByZip($zip) {
-        return $this->findByZip($zip)->select('adresa')->fetch();
+        return $this->findByZip($zip)->fetchAssoc();
     }
     public function filterAddressByCity($city) {
-        return $this->findByCity($city)->select('adresa')->fetch();
+        return $this->findByCity($city)->fetchAssoc();
     }
 
 

@@ -62,21 +62,47 @@ class CzechPostNaPostuRepository extends BaseModel
         return $this->findBy($by);
     }
 
-    public function findByCity($city)
+    public function findByCity($address)
     {
         $by = [
-            'okres LIKE ?' => $city . '%'
+            'adresa LIKE ?' => '%' . $address . '%'
         ];
 
         return $this->findBy($by);
     }
 
     public function filterAddressByZip($zip) {
-        return $this->findByZip($zip)->select('adresa')->fetch();
+        $result = [];
+
+        $data = $this->findByZip($zip)->limit(15)->fetchAll();
+
+        if (!empty($data)) {
+            foreach ($data as $row) {
+                $result[] = [
+                    'id' => $row->psc,
+                    'adresa' => $row->adresa,
+                ];
+            }
+        }
+
+        return $result;
     }
 
     public function filterAddressByCity($city) {
-        return $this->findByCity($city)->select('adresa')->fetch();
+        $result = [];
+
+        $data = $this->findByCity($city)->limit(15)->fetchAll();
+
+        if (!empty($data)) {
+            foreach ($data as $row) {
+                $result[] = [
+                    'psc' => $row->psc,
+                    'adresa' => $row->adresa,
+                ];
+            }
+        }
+
+        return $result;
     }
 
 }

@@ -180,6 +180,7 @@ class CeskaPosta implements ICarrier
 
     /**
      * Exports packet data into a new file.
+     * @param string $location
      * @param string $sender
      * @param string $data
      * @return bool
@@ -190,12 +191,21 @@ class CeskaPosta implements ICarrier
         $array[0] = $sender;
         $array[1] = $data;
 
-        $saveResult = file_put_contents($location, $array);
+        if (!file_exists($location)) {
+            $saveResult = file_put_contents($location, $array[0]);
+            if (!$saveResult)
+            {
+                Debugger::log('Nepodařilo se uložit data zásilky do souboru .csv', ILogger::ERROR);
+                return FALSE;
+            }
+        }
+        $saveResult = file_put_contents($location, $array[1], FILE_APPEND);
         if (!$saveResult)
         {
             Debugger::log('Nepodařilo se uložit data zásilky do souboru .csv', ILogger::ERROR);
             return FALSE;
         }
+
 
         return TRUE;
 

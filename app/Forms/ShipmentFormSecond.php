@@ -122,8 +122,7 @@ class ShipmentFormSecond extends BaseComponent
     }
 
     public function handleAutocomplete() {
-
-        $userInput = $this->presenter->getParameter('userInput');
+        $userInput = $this->getPresenter()->getParameter('userInput');
 
         if ($this->serviceId == self::ID_CESKA_POSTA_BALIK_NA_POSTU ) {
             if (is_numeric(str_replace(" ", "", $userInput))){
@@ -152,6 +151,8 @@ class ShipmentFormSecond extends BaseComponent
                 $res = $this->zasilkovnaPickupPointRepository->filterAddressByCity($userInput);
             }
         }
+
+        Debugger::barDump($this->serviceId);
         Debugger::barDump($res);
         $this->presenter->sendResponse(new JsonResponse($res));
     }
@@ -182,7 +183,11 @@ class ShipmentFormSecond extends BaseComponent
         } else {
             $form->addText('warning', 'Pro vybranou službu nejsou dostupné žádné doplňkové služby');
         }
-        $form->addText('pickup_place', 'Výdejné místo (Zadejte město nebo PSČ oblasti.)')->setRequired();
+        $form->addText('pickup_place', 'Výdejné místo (Zadejte město nebo PSČ oblasti.)')
+            ->setHtmlId('pickup-place');
+
+        $form->addHidden('psc')
+            ->setHtmlId('psc-hidden');
 
 
         return $form;
