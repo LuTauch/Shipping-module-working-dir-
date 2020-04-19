@@ -1,22 +1,47 @@
+includes:
+
+parameters:
+    ceskaPostaDir: 'C:\xampp\htdocs\eshop\temp\CzechPostShipment'
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 1 day
+
+#TODO presunout sender parameters do samostatneho neceho, pak upravit extensions
+shippingModule:
+    eshop: 'Testovací Eshop'
+    currency: 'CZK'
+    countryCode: 'CZ'
+    zasilkovnaApiKey: '41494564a70d6de6'
+    zasilkovnaUrl: 'https://www.zasilkovna.cz/api/v3/'
+    senderName: 'Tauchenová Lucie'
+    senderZip: '32600'
+    senderCity: 'Pilsen'
+    senderCityPart: 'Plzeň-Východní předměstí'
+    senderStreet: 'Polní'
+    senderStreetNr: '1'
+    senderPhone: '607634632'
+    senderEmail: 'lucie.tauchenova@gmail.com'
+
+
+extensions:
+    shippingModule: LuTauch\App\Extensions\ShippingModuleExtensions
+
 services:
-	- LuTauch\App\Forms\IShipmentFormSecondFactory
-	- LuTauch\App\Forms\IShipmentFormFirstFactory
-	- LuTauch\App\Forms\IConfigFormFirstFactory
-	- LuTauch\App\Forms\IConfigFormSecondFactory
-	- LuTauch\App\Model\CarrierModel
-	- LuTauch\App\Model\OptionsModel
-	- LuTauch\App\Model\Options
-	- LuTauch\App\Model\ZasilkovnaPickupPointModel
-	- LuTauch\App\Model\CzechPostPickupPointModel
-	- LuTauch\App\Model\Factory\CarrierFactory
-	- LuTauch\App\Model\PacketItems\Packet
-	- LuTauch\App\Model\PacketItems\Cod
-	- LuTauch\App\Model\PacketItems\Size
-	- LuTauch\App\Model\PacketItems\Recipient
-	- LuTauch\App\Model\PickupPoint\CzechPostPickupPoint
-	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointDownloader
-	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointParser
-	- LuTauch\App\Model\PickupPoint\CzechPostPickupPointRepository
-	- LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPoint
-	- LuTauch\app\Model\Repository\ZasilkovnaPickupPointRepository
+    router: App\Router\RouterFactory::createRouter
+
+    - App\Model\Repository\ProductRepository
+    - App\Model\Repository\OrderRepository
+    - App\Model\CartSession
+    - App\Model\OrderSession
+    - App\Model\UserSession
+    - App\Model\Facade\ProductFacade
+    - App\Model\Facade\OrderFacade(%ceskaPostaDir%)
+    - App\Forms\IOrderFormFirstFactory
+    - App\Forms\IOrderFormSecondFactory
 
