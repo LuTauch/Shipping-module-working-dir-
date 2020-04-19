@@ -3,6 +3,7 @@
 
 namespace LuTauch\App\Model;
 
+use LuTauch\App\Enum\DeliveryEnum;
 use stdClass;
 
 class OptionsModel
@@ -63,6 +64,21 @@ class OptionsModel
         } else {
             return 'packet_xl = 1';
         }
+    }
+
+    public function getAdditionalServiceArray($additionalServices)
+    {
+        $return = [];
+        foreach ($additionalServices as $serviceName => $additionalService)
+        {
+            if ($additionalService === 1)
+            {
+                $return[$serviceName] = DeliveryEnum::getTranslation($serviceName);
+
+            }
+
+        }
+        return $return;
     }
 
 

@@ -4,14 +4,38 @@ namespace LuTauch\App\Model\PacketItems;
 
 class Packet
 {
+    /**
+     * @var int
+     */
     private $ID;
+    /** @var Recipient $recipient */
     public $recipient;
     //zatim jen hmotnost
+    /**
+     * @var Size $size
+     */
     public $size;
+    /**
+     * @var Cod cod
+     */
     public $cod;
+    /**
+     * @var string
+     */
     private $eshop;
+    /**
+     * @var string
+     */
     private $serviceName;
+    /**
+     * @var array
+     */
     private $additionalServices;
+
+    /**
+     * @var string
+     */
+    private $pickupPoint;
 
 
 
@@ -130,6 +154,22 @@ class Packet
             'weekendDelivery' => $additionalServices['weekendDelivery'],
             'expressDelivery' => $additionalServices['expressDelivery'],
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPickupPoint(): string
+    {
+        return $this->pickupPoint;
+    }
+
+    /**
+     * @param string $pickupPoint
+     */
+    public function setPickupPoint(string $pickupPoint): void
+    {
+        $this->pickupPoint = $pickupPoint;
     }
 
 

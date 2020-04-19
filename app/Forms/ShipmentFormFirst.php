@@ -37,7 +37,7 @@ class ShipmentFormFirst extends BaseComponent
     /**
      * @param array $serviceIds
      */
-    public function setServiceIds(array $serviceIds): void
+    public function setAvailableServiceIds(array $serviceIds): void
     {
         $this->serviceIds = $serviceIds;
     }
@@ -74,8 +74,7 @@ class ShipmentFormFirst extends BaseComponent
      */
     public function shipmentFormFirstSucceeded(UI\Form $form, \stdClass $values)
     {
-        //Debugger::barDump($additionalServices);die;
-        $this->presenter->redirect('Shipment:step2', [$values->services]);
+        $this->presenter->redirect('Shipment:step2', [$this->serviceIds], [$values->services]);
 
 
 

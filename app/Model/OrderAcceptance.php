@@ -48,18 +48,17 @@ class OrderAcceptance
     }
 
     /**
-     * @param int $id
      * @param array $recipient
-     * @param string $weight
-     * @param string $codValue
-     * @param string $name
+     * @param array $orderData
+     * @param array $additionalServices
+     * @param array $serviceData
      * @return bool order processed successfully
      */
-    public function acceptOrderFromEshop(array $recipient, array $orderData, array $additionalServices, array $serviceData)
+    public function acceptOrderFromEshop(array $recipient, array $orderData, array $additionalServices, array $serviceData, $location)
     {
         $this->setRecipientData($recipient);
         $this->setCodData($orderData);
-        $this->setPacketData($this->recipient, $this->cod, $orderData, $additionalServices);
+        $this->setPacketData($this->recipient, $this->cod, $serviceData, $orderData, $additionalServices);
         $this->processServiceData($serviceData);
 
         try {
@@ -67,7 +66,7 @@ class OrderAcceptance
         } catch (\NonExistingCarrierException $e) {
         }
 
-        return $this->carrier->processOrder($this->serviceName, $this->packet);
+        return $this->carrier->processOrder($this->serviceName, $this->packet, $location);
     }
 
     public function processServiceData($serviceData): void
@@ -75,7 +74,6 @@ class OrderAcceptance
         $res = Strings::split($serviceData['serviceName'], '~ - \s*~');
         $this->carrierName = $res[0];
         $this->serviceName = $res[1];
-        $this->pickupPoint = $serviceData['pickupPoint'];
     }
 
 
@@ -100,12 +98,13 @@ class OrderAcceptance
         $this->cod->setCurrency($this->currency);
     }
 
-    public function setPacketData(Recipient $recipient, Cod $cod, array $orderData, array $additionalServices)
+    public function setPacketData(Recipient $recipient, Cod $cod, array $serviceData, array $orderData, array $additionalServices)
     {
         $this->packet->setID($orderData['orderId']);
         $this->packet->setCod($cod);
         $this->packet->setRecipient($recipient);
         $this->packet->setSize($orderData['size']);
         $this->packet->setAdditionalServices($additionalServices);
+        $this->packet->setPickupPoint($serviceData['pickupPoint']);
     }
 }

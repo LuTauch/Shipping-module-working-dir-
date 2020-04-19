@@ -20,31 +20,22 @@ class CeskaPosta implements ICarrier
     private $sender;
 
     /**
-     * @var string $location of the local file
-     */
-    private $location;
-
-    /**
      * path to local file
      */
-    const POST_OFFICE_TEMP_FILE_CSV = __DIR__ . '/../temp/czechPostShipment/ceska-posta-';
     const WEEKEND_DELIVERY = '18+19';
     const EVENING_DELIVERY = '1B';
-    const MULTI_PIECE_SHIPMENT = '70';
 
     public function __construct(Sender $sender)
     {
         $this->sender = $sender;
-        //TODO: predelat na datum (ne datetime) -> pro každý den -> jiný soubor -> ten den ukládání všech zásilek do 1 souboru
-        $this->location = self::POST_OFFICE_TEMP_FILE_CSV . new DateTime('today') . '-data.csv';
     }
 
-    public function processOrder($service, Packet $packet)
+    public function processOrder(string $service, Packet $packet, string $location)
     {
         $code = $this->getServiceCode($service);
         $senderData = $this->sender->getSenderData();
         $packetData = $this->getPacketData($service, $packet, $code);
-        $res = $this->exportData($senderData, $packetData);
+        $res = $this->exportData($senderData, $packetData, $location);
 
         if (!$res) {
             Debugger::log('Nepodařilo se zpracovat objednávku.', ILogger::ERROR);
@@ -70,17 +61,17 @@ class CeskaPosta implements ICarrier
         $newId = $this->generateParcelIdNumber($service, $packet);
         $data = [];
         $data[0] = $newId;
-        $data[1] = $packet->recipient['surname'] . $packet->recipient['name'];
+        $data[1] = $packet->recipient->getSurname() . $packet->recipient->getName();
         $data[2] = $this->getAddress($packet, $code);
-        $data[8] = $packet->recipient['countryCode'];
-        $data[9] = $packet->recipient['phoneNo'];
-        $data[10] = $packet->recipient['email'];
-        $data[11] = $this->getWeightInKg($packet);
+        $data[8] = $packet->recipient->getCountryCode();
+        $data[9] = $packet->recipient->getPhoneNo();
+        $data[10] = $packet->recipient->getEmail();
+        $data[11] = $packet->getSize();
         $data[12] = 'doplnkove-sluzby';
         $data[13] = '';
         $data[14] = $this->getCod($packet);
         $data[15] = '';
-        $data[16] = $packet->getID();
+        $data[16] = '';
         $data[17] = '';
         $data[17] = '';
         $data[18] = '\n';
@@ -96,28 +87,28 @@ class CeskaPosta implements ICarrier
      */
     private function getAddress(Packet $packet, string $code) {
         $address = [];
-        $pickupPoint = $this->splitPickupPointName($packet->recipient['pickupPoint']);
+        $pickupPoint = $this->splitPickupPointName($packet->getPickupPoint());
         if ($code == 'DR') {
-            $address[0] = $packet->recipient['street'];
+            $address[0] = $packet->recipient->getStreet();
             $address[1] = '';
-            $address[2] = $packet->recipient['houseNo'];
-            $address[3] = $packet->recipient['zipCode'];
-            $address[4] = $packet->recipient['city'];
-            $address[5] = $packet->recipient['cityPart'];
+            $address[2] = $packet->recipient->getHouseNo();
+            $address[3] = $packet->recipient->getZipCode();
+            $address[4] = $packet->recipient->getCity();
+            $address[5] = $packet->recipient->getCityPart();
         } elseif ($code == 'NP') {
             $address[0] = 'Na poštu';
             $address[1] = '';
             $address[2] = '';
-            $address[3] = $pickupPoint[1]; // zip pickup
-            $address[4] = $pickupPoint[2]; //obec pickup
-            $address[5] = $pickupPoint[0]; //cast obce pickup
+            $address[3] = $pickupPoint[2]; // zip pickup
+            $address[4] = $pickupPoint[1]; //obec pickup
+            $address[5] = $pickupPoint[3]; //cast obce pickup
         } else {
             $address[0] = 'Balíkovna';
             $address[1] = '';
             $address[2] = '';
-            $address[3] = $pickupPoint[1]; // zip pickup
-            $address[4] = $pickupPoint[2]; //obec pickup
-            $address[5] = $pickupPoint[0]; //cast obce pickup
+            $address[3] = $pickupPoint[2]; // zip pickup
+            $address[4] = $pickupPoint[1]; //obec pickup
+            $address[5] = $pickupPoint[3]; //cast obce pickup
         }
 
         $addressString = implode(';', $address);
@@ -153,23 +144,14 @@ class CeskaPosta implements ICarrier
      */
     public function generateParcelIdNumber(string $service, Packet $packet)
     {
+
         $service_code = $this->getServiceCode($service);
-        $newId = Strings::padLeft($packet['id'], '9', 0);
+        $newId = Strings::padLeft($packet->getID(), '9', 0);
+
         $end_code = 'CZ';
 
-        $parcelIdNumber = $service_code . $newId . $end_code;
+        return $service_code . $newId . $end_code;
 
-        return $parcelIdNumber;
-    }
-
-    //TODO. otestovat
-    /**
-     * Gets parcel weight in kg (originally in grams)
-     * @param $packet
-     * @return float|int
-     */
-    public function getWeightInKg(Packet $packet) {
-        return $packet->size['weight'] / 1000;
     }
 
     //TODO. otestovat
@@ -179,8 +161,8 @@ class CeskaPosta implements ICarrier
      * @return string
      */
     public function getCod(Packet $packet) {
-        if ($packet->cod['value'] > 0) {
-            return $packet->cod['value'];
+        if ($packet->cod->getValue() > 0) {
+            return $packet->cod->getValue();
         } else {
             return '';
         }
@@ -192,7 +174,8 @@ class CeskaPosta implements ICarrier
      * @return array
      */
     public function splitPickupPointName($pickupPoint) {
-        return Strings::split($pickupPoint, '~ , \s*~');
+        $res = Strings::split($pickupPoint, '~, \s*~');
+        return $res;
     }
 
     /**
@@ -201,13 +184,13 @@ class CeskaPosta implements ICarrier
      * @param string $data
      * @return bool
      */
-    private function exportData(string $sender, string $data)
+    private function exportData(string $location, string $sender, string $data)
     {
         $array = [];
         $array[0] = $sender;
         $array[1] = $data;
 
-        $saveResult = file_put_contents($this->location, $array);
+        $saveResult = file_put_contents($location, $array);
         if (!$saveResult)
         {
             Debugger::log('Nepodařilo se uložit data zásilky do souboru .csv', ILogger::ERROR);

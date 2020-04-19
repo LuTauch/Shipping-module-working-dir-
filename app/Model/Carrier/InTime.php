@@ -10,7 +10,7 @@ use Tracy\Debugger;
 class InTime implements ICarrier
 {
 
-    public function processOrder($service, Packet $packet)
+    public function processOrder(string $service, Packet $packet, string $location)
     {
         // TODO: Implement processOrder() method.
         return TRUE;

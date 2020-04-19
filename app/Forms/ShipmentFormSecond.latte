@@ -1,7 +1,4 @@
 {form form}
-    {capture $autocompleteLink}
-        {link autocomplete!}
-    {/capture}
     <div class="alert alert-danger alert-dismissible fade show" role="alert" n:if="$form->hasErrors()">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -11,11 +8,11 @@
     <fieldset>
         <legend>Doprava</legend>
         <div class="form-row">
-            {dump $additionalServices}
             <div class="form-group col-sm-12">
                 {label additionalService class=>'font-weight-bold'/}
                 <br>
                 {input additionalService class=>'form-control'}
+                {label warning class=>'text-danger'/}
             </div>
         </div>
     </fieldset>
@@ -30,7 +27,11 @@
             </div>
         {/snippet}
     </fieldset>
-    <a class="btn btn-primary" href="{plink Shipment:}">Zpět na výběr dopravy</a>
+
     {input submit class=>"btn btn-primary"}
 
 {/form}
+
+<script>
+        var autocompleteURL = {link autocomplete!};
+</script>

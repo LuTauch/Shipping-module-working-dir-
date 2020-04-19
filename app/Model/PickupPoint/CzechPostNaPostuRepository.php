@@ -6,7 +6,7 @@ namespace LuTauch\App\Model\PickupPoint;
 use LuTauch\App\Model\BaseModel;
 use Tracy\Debugger;
 
-class CzechPostPickupPointRepository extends BaseModel
+class CzechPostNaPostuRepository extends BaseModel
 {
 
     public function saveXml($xmlRootObject)
@@ -50,7 +50,7 @@ class CzechPostPickupPointRepository extends BaseModel
 
     protected function getTableName()
     {
-        return 'ceska_posta';
+        return 'ceska_posta_na_postu';
     }
 
     public function findByZip($zip)
@@ -62,5 +62,21 @@ class CzechPostPickupPointRepository extends BaseModel
         return $this->findBy($by);
     }
 
+    public function findByCity($city)
+    {
+        $by = [
+            'okres LIKE ?' => $city . '%'
+        ];
+
+        return $this->findBy($by);
+    }
+
+    public function filterAddressByZip($zip) {
+        return $this->findByZip($zip)->select('adresa')->fetch();
+    }
+
+    public function filterAddressByCity($city) {
+        return $this->findByCity($city)->select('adresa')->fetch();
+    }
 
 }

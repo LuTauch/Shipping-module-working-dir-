@@ -81,8 +81,7 @@ class CarrierModel extends BaseModel
     }
 
     /**
-     * Gets service ids which suit to the condition given by sql query $innerSql.
-     * @param stdClass $values
+     * @param $weight
      * @return array
      */
     public function findServiceIdsFromSelected($weight)
@@ -96,8 +95,6 @@ class CarrierModel extends BaseModel
         }
         $packetCategorySql = $this->optionsModel->getCategoryOfPacket($weight);
         */
-
-        $weight = $weight / 1000;
 
         $serviceIds = $this->database->query('SELECT service_id FROM service WHERE selected = 1 AND max_weight >= ?', $weight)->fetchPairs(NULL, 'service_id');
         return $serviceIds;
@@ -122,7 +119,12 @@ class CarrierModel extends BaseModel
         return $this->findBy($by)->update($updateData);
     }
 
-    public function getPriceOfService($id)
+    /**
+     * Gets service price by service id.
+     * @param $id
+     * @return array
+     */
+    public function getServicePrice($id)
     {
         return $this->database->query('SELECT price FROM service WHERE service_id = ?', $id)->fetchPairs(NULL, 'price');
     }
@@ -159,7 +161,7 @@ class CarrierModel extends BaseModel
             'selected' => 1
         ];
 
-        $res = $this->findBy($by)->select()->fetchAll();
+        $res = $this->findBy($by)->fetchAll();
         return $res;
     }
 

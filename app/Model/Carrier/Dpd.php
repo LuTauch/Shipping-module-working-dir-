@@ -8,7 +8,7 @@ use LuTauch\App\Model\PacketItems\Packet;
 class Dpd implements ICarrier
 {
 
-    public function processOrder($service, Packet $packet)
+    public function processOrder(string $service, Packet $packet, string $location)
     {
       return TRUE;
 

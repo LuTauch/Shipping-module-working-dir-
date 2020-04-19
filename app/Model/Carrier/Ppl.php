@@ -9,7 +9,7 @@ use LuTauch\App\Model\PacketItems\Packet;
 class Ppl implements ICarrier
 {
 
-    public function processOrder($service, Packet $packet)
+    public function processOrder(string $service, Packet $packet, string $location)
     {
         //TODO
         return TRUE;

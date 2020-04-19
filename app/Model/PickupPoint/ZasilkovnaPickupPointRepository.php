@@ -10,10 +10,7 @@ use Tracy\Debugger;
 class ZasilkovnaPickupPointRepository extends BaseModel
 {
 
-    protected function getTableName()
-    {
-        return 'zasilkovna';
-    }
+
 
     public function saveData($data)
     {
@@ -57,4 +54,35 @@ class ZasilkovnaPickupPointRepository extends BaseModel
 
         return TRUE;
     }
+
+    protected function getTableName()
+    {
+        return 'zasilkovna';
+    }
+
+    public function findByZip($zip)
+    {
+        $by = [
+            'zip LIKE ?' => $zip . '%'
+        ];
+
+        return $this->findBy($by);
+    }
+
+    public function findByCity($city)
+    {
+        $by = [
+            'city LIKE ?' => $city . '%'
+        ];
+
+        return $this->findBy($by);
+    }
+
+    public function filterAddressByZip($zip) {
+        return $this->findByZip($zip)->select('zip, street, city')->fetchAll();
+    }
+    public function filterAddressByCity($city) {
+        return $this->findByCity($city)->select('zip, street, city')->fetchAll();
 }
+}
+
