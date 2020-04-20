@@ -86,16 +86,6 @@ class CarrierModel extends BaseModel
      */
     public function findServiceIdsFromSelected($weight)
     {
-
-
-        /* $innerSql = $this->optionsModel->getOptionsGroupSQLString($values);
-
-        if ($innerSql != '') {
-            $innerSql = $innerSql . ' AND ';
-        }
-        $packetCategorySql = $this->optionsModel->getCategoryOfPacket($weight);
-        */
-
         $serviceIds = $this->database->query('SELECT service_id FROM service WHERE selected = 1 AND max_weight >= ?', $weight)->fetchPairs(NULL, 'service_id');
         return $serviceIds;
     }

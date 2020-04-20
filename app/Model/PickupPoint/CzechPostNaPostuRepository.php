@@ -53,16 +53,8 @@ class CzechPostNaPostuRepository extends BaseModel
         return 'ceska_posta_na_postu';
     }
 
-    public function findByZip($zip)
-    {
-        $by = [
-            'psc LIKE ?' => $zip . '%'
-        ];
 
-        return $this->findBy($by);
-    }
-
-    public function findByCity($address)
+    public function findByAddress($address)
     {
         $by = [
             'adresa LIKE ?' => '%' . $address . '%'
@@ -71,27 +63,11 @@ class CzechPostNaPostuRepository extends BaseModel
         return $this->findBy($by);
     }
 
-    public function filterAddressByZip($zip) {
+
+    public function filterAddress($address) {
         $result = [];
 
-        $data = $this->findByZip($zip)->limit(15)->fetchAll();
-
-        if (!empty($data)) {
-            foreach ($data as $row) {
-                $result[] = [
-                    'id' => $row->psc,
-                    'adresa' => $row->adresa,
-                ];
-            }
-        }
-
-        return $result;
-    }
-
-    public function filterAddressByCity($city) {
-        $result = [];
-
-        $data = $this->findByCity($city)->limit(15)->fetchAll();
+        $data = $this->findByAddress($address)->limit(15)->fetchAll();
 
         if (!empty($data)) {
             foreach ($data as $row) {

@@ -14,6 +14,7 @@ class CzechPostPickupPointParser
         libxml_use_internal_errors(TRUE);
         $xmlRootObject = simplexml_load_file($downloadLocation);
 
+
         if (FALSE === $xmlRootObject)
         {
             Debugger::log('Při parsování xml feedu poboček české pošty došlo k následujícím chybám:', ILogger::ERROR);

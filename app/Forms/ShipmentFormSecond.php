@@ -125,35 +125,15 @@ class ShipmentFormSecond extends BaseComponent
         $userInput = $this->getPresenter()->getParameter('userInput');
 
         if ($this->serviceId == self::ID_CESKA_POSTA_BALIK_NA_POSTU ) {
-            if (is_numeric(str_replace(" ", "", $userInput))){
-                $res = $this->czechPostNaPostuRepository->filterAddressByZip($userInput);
-            }
-            else
-            {
-                $res = $this->czechPostNaPostuRepository->filterAddressByCity($userInput);
-            }
+           $res = $this->czechPostNaPostuRepository->filterAddress($userInput);
 
         } elseif ($this->serviceId == self::ID_CESKA_POSTA_BALIK_DO_BALIKOVNY) {
-            if (is_numeric(str_replace(" ", "", $userInput))){
-                $res = $this->czechPostDoBalikovnyRepository->filterAddressByZip($userInput);
-            }
-            else
-            {
-                $res = $this->czechPostDoBalikovnyRepository->filterAddressByCity($userInput);
-            }
+            $res = $this->czechPostDoBalikovnyRepository->filterAddress($userInput);
         }
         else if ($this->serviceId == self::ID_ZASILKOVNA_NA_VYDEJNI_MISTA) {
-            if (is_numeric(str_replace(" ", "", $userInput))){
-                $res = $this->zasilkovnaPickupPointRepository->filterAddressByZip($userInput);
-            }
-            else
-            {
-                $res = $this->zasilkovnaPickupPointRepository->filterAddressByCity($userInput);
-            }
+            $res = $this->zasilkovnaPickupPointRepository->filterAddress($userInput);
         }
 
-        Debugger::barDump($this->serviceId);
-        Debugger::barDump($res);
         $this->presenter->sendResponse(new JsonResponse($res));
     }
 
@@ -178,17 +158,24 @@ class ShipmentFormSecond extends BaseComponent
     {
         $additionalServiceArray = $this->optionsModel->getAdditionalServiceArray($this->additionalServices);
         $form->addCheckboxList('additionalService', 'Doplňkové služby', $additionalServiceArray);
+
         if (!empty($additionalServiceArray)) {
             $form->addText('warning', '');
         } else {
             $form->addText('warning', 'Pro vybranou službu nejsou dostupné žádné doplňkové služby');
         }
-        $form->addText('pickup_place', 'Výdejné místo (Zadejte město nebo PSČ oblasti.)')
-            ->setHtmlId('pickup-place');
+
+        if ($this->serviceId == self::ID_CESKA_POSTA_BALIK_NA_POSTU || $this->serviceId == self::ID_CESKA_POSTA_BALIK_DO_BALIKOVNY
+            || $this->serviceId == self::ID_ZASILKOVNA_NA_VYDEJNI_MISTA) {
+            $form->addText('pickup_place', 'Výdejní místo (Zadejte město, ulici či psč oblasti.)')
+                ->setHtmlId('pickup-place');
+        } else {
+            $form->addText('pickup_place', 'Pro vybranou službu není služba doručení na výdejní místo dostupná.')
+            ->setHtmlId('pickup-place-hidden')->setDisabled();
+        }
 
         $form->addHidden('psc')
             ->setHtmlId('psc-hidden');
-
 
         return $form;
     }

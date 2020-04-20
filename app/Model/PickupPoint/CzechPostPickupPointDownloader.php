@@ -14,6 +14,7 @@ class CzechPostPickupPointDownloader
     public function download($from, $to)
     {
         $xmlFeedString = file_get_contents($from);
+
         if (!$xmlFeedString)
         {
             Debugger::log('Nepodařilo se stáhnout xml feed poboček české pošty z ' . $from

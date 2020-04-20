@@ -28,8 +28,9 @@ class CzechPostDoBalikovnyRepository extends BaseModel
                 // sestavení kompletního záznamu řádku tabulky
                 $dataRow = [
                     'psc' => $postOfficeRecord->PSC,
-                    'nazev' => $postOfficeRecord->NAZ_PROV,
-                    'okres' => $postOfficeRecord->OKRES,
+                    'nazev' => $postOfficeRecord->NAZEV,
+                    'obec' => $postOfficeRecord->OBEC,
+                    'cast_obce' => $postOfficeRecord->C_OBCE,
                     'adresa' => $postOfficeRecord->ADRESA,
                     'info' => $postOfficeRecord->OTV_DOBA
                 ];
@@ -40,7 +41,7 @@ class CzechPostDoBalikovnyRepository extends BaseModel
 
             $this->database->commit();
         } catch (\Nette\Database\DriverException $ex) {
-            Debugger::log('Import xml feedu poboček češké pošty selhal s chybou: ' . $ex->getMessage());
+            Debugger::log('Save xml - do balikovny: Import xml feedu poboček češké pošty selhal s chybou: ' . $ex->getMessage());
             $this->database->rollBack();
             throw $ex;
         }
@@ -53,28 +54,31 @@ class CzechPostDoBalikovnyRepository extends BaseModel
         return 'ceska_posta_do_balikovny';
     }
 
-    public function findByZip($zip)
+    public function findByAddress($address)
     {
         $by = [
-            'psc LIKE ?' => $zip . '%'
-        ];
-
-        return $this->findBy($by);
-    }
-    public function findByCity($city)
-    {
-        $by = [
-            'adresa LIKE ?' => '%' . $city . '%'
+            'adresa LIKE ?' => '%' . $address . '%'
         ];
 
         return $this->findBy($by);
     }
 
-    public function filterAddressByZip($zip) {
-        return $this->findByZip($zip)->fetchAssoc();
-    }
-    public function filterAddressByCity($city) {
-        return $this->findByCity($city)->fetchAssoc();
+
+    public function filterAddress($address) {
+        $result = [];
+
+        $data = $this->findByAddress($address)->limit(15)->fetchAll();
+
+        if (!empty($data)) {
+            foreach ($data as $row) {
+                $result[] = [
+                    'psc' => $row->psc,
+                    'adresa' => $row->adresa,
+                ];
+            }
+        }
+
+        return $result;
     }
 
 

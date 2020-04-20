@@ -60,16 +60,8 @@ class ZasilkovnaPickupPointRepository extends BaseModel
         return 'zasilkovna';
     }
 
-    public function findByZip($zip)
-    {
-        $by = [
-            'zip LIKE ?' => $zip . '%'
-        ];
 
-        return $this->findBy($by);
-    }
-
-    public function findByCity($address)
+    public function findByAddress($address)
     {
         $by = [
             'city LIKE ? OR zip LIKE ? OR street LIKE ?' => ['%' . $address . '%', '%' . $address . '%', '%' . $address . '%']
@@ -78,10 +70,10 @@ class ZasilkovnaPickupPointRepository extends BaseModel
         return $this->findBy($by);
     }
 
-    public function filterAddressByZip($zip) {
+    public function filterAddress($address) {
         $result = [];
 
-        $data = $this->findByZip($zip)->limit(15)->fetchAll();
+        $data = $this->findByAddress($address)->limit(15)->fetchAll();
 
         if (!empty($data)) {
             foreach ($data as $row) {
@@ -94,8 +86,5 @@ class ZasilkovnaPickupPointRepository extends BaseModel
 
         return $result;
     }
-    public function filterAddressByCity($city) {
-        return $this->findByCity($city)->select('zip, street, city')->fetchAll();
-}
 }
 
