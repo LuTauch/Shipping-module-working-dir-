@@ -3,9 +3,9 @@ services:
 	- LuTauch\App\Forms\IShipmentFormFirstFactory
 	- LuTauch\App\Forms\IConfigFormFirstFactory
 	- LuTauch\App\Forms\IConfigFormSecondFactory
-	- LuTauch\App\Model\CarrierModel
-	- LuTauch\App\Model\OptionsModel
-	- LuTauch\App\Model\Options
+	- LuTauch\App\Model\Repository\CarrierModel
+	- LuTauch\App\Model\Repository\OptionsModel
+	- LuTauch\App\Model\Repository\Options
 	- LuTauch\App\Model\Factory\CarrierFactory
 	- LuTauch\App\Model\PacketItems\Packet
 	- LuTauch\App\Model\PacketItems\Cod
@@ -17,4 +17,4 @@ services:
 	- LuTauch\App\Model\PickupPoint\CzechPostNaPostuRepository
 	- LuTauch\App\Model\PickupPoint\CzechPostDoBalikovnyRepository
 	- LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPoint
-	- LuTauch\app\Model\Repository\ZasilkovnaPickupPointRepository
+	- LuTauch\app\Model\PickupPoint\ZasilkovnaPickupPointRepository

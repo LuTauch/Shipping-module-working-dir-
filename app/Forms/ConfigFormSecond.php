@@ -3,7 +3,7 @@
 namespace LuTauch\App\Forms;
 
 use Nette\Application\UI;
-use LuTauch\App\Model\CarrierModel;
+use LuTauch\App\Model\Repository\CarrierModel;
 use Tracy\Debugger;
 
 /**
@@ -14,7 +14,7 @@ use Tracy\Debugger;
 class ConfigFormSecond extends BaseComponent
 {
     /**
-     * @var serviceids ids of services to be selected
+     * @var array $serviceids ids of services to be selected
      */
     private $serviceIds;
 

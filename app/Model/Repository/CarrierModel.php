@@ -1,12 +1,12 @@
 <?php
 
 
-namespace LuTauch\App\Model;
+namespace LuTauch\App\Model\Repository;
 
 
-use LuTauch\App\Model\OptionsModel;
+use LuTauch\App\Model\Repository\OptionsModel;
 use Nette\Database\Context;
-use LuTauch\App\Model\Options;
+use LuTauch\App\Model\Repository\Options;
 use Tracy\Debugger;
 
 /**
@@ -25,7 +25,7 @@ class CarrierModel extends BaseModel
     /**
      * CarrierModel constructor.
      * @param Context $database
-     * @param \LuTauch\App\Model\OptionsModel $optionsModel
+     * @param \LuTauch\App\Model\Repository\OptionsModel $optionsModel
      */
     public function __construct(Context $database, OptionsModel $optionsModel)
     {
@@ -53,6 +53,10 @@ class CarrierModel extends BaseModel
         return $this->getServicesByIds($serviceIds)->fetchPairs('service_id', 'complete_name');
     }
 
+    /**
+     * @param $serviceIds
+     * @return \Nette\Database\ResultSet
+     */
     public function getServicesByIds($serviceIds)
     {
         $sql = 'SELECT service_id, CONCAT(carrier_name, " - ", service_name) AS complete_name, price

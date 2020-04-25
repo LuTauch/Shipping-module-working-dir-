@@ -2,7 +2,7 @@
 
 namespace LuTauch\App\Forms;
 
-use LuTauch\App\Model\CarrierModel;
+use LuTauch\App\Model\Repository\CarrierModel;
 use Nette\Application\UI;
 use Nette\Forms\Form;
 use Tracy\Debugger;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LuTauch\App\Model;
+namespace LuTauch\App;
 
 
 use LuTauch\App\Model\Factory\CarrierFactory;
@@ -16,8 +16,6 @@ class OrderAcceptance
     private $carrierName;
 
     private $serviceName;
-
-    private $pickupPoint;
 
     private $carrier;
 
@@ -36,6 +34,16 @@ class OrderAcceptance
 
     //tady proběhne úplně celý zpracování objednávky
 
+    /**
+     * OrderAcceptance constructor.
+     * @param $eshop
+     * @param $countryCode
+     * @param $currency
+     * @param CarrierFactory $carrierFactory
+     * @param Packet $packet
+     * @param Recipient $recipient
+     * @param Cod $cod
+     */
     public function __construct($eshop, $countryCode, $currency, CarrierFactory $carrierFactory, Packet $packet, Recipient $recipient, Cod $cod)
     {
         $this->eshop = $eshop;
@@ -75,8 +83,6 @@ class OrderAcceptance
         $this->carrierName = $res[0];
         $this->serviceName = $res[1];
     }
-
-
 
     public function setRecipientData(array $recipientData): void
     {

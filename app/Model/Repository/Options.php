@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LuTauch\App\Model;
+namespace LuTauch\App\Model\Repository;
 
 
 class Options

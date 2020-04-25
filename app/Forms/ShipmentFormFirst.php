@@ -2,10 +2,9 @@
 
 namespace LuTauch\App\Forms;
 
-use LuTauch\App\Model\CarrierModel;
-use LuTauch\App\Model\Options;
+use LuTauch\App\Model\Repository\CarrierModel;
+use Nette\Application\AbortException;
 use Nette\Application\UI;
-use Tracy\Debugger;
 
 /**
  * Class ShipmentFormFirst
@@ -27,7 +26,6 @@ class ShipmentFormFirst extends BaseComponent
     /**
      * ConfigFormFirst constructor. important for dependency handover.
      * @param CarrierModel $carrierModel
-     * @param Options $options
      */
     public function __construct(CarrierModel $carrierModel)
     {
@@ -44,7 +42,6 @@ class ShipmentFormFirst extends BaseComponent
 
 
     /** Creates a configuration form with a checkboxlist containing service names
-     * @throws UI\InvalidLinkException
      */
     public function createComponentForm(): UI\Form
     {
@@ -70,10 +67,12 @@ class ShipmentFormFirst extends BaseComponent
     /**
      * @param UI\Form $form
      * @param \stdClass $values
-     * @throws \Nette\Application\AbortException
+     * @throws AbortException
      */
     public function shipmentFormFirstSucceeded(UI\Form $form, \stdClass $values)
     {
+        //TODO podminka na presmerovani na overview
+        //$this->presenter->redirect('Order:overview');
         $this->presenter->redirect('Shipment:step2', [$this->serviceIds], [$values->services]);
 
 

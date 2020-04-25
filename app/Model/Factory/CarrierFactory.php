@@ -31,6 +31,11 @@ class CarrierFactory extends BaseCarrierFactory
         $this->sender = $sender;
     }
 
+    /**
+     * @param $name
+     * @return CeskaPosta|Dpd|Geis|Gls|InTime|Ppl|TopTrans|Ulozenka|Zasilkovna
+     * @throws \NonExistingCarrierException
+     */
     public function createCarrier($name)
     {
         switch ($name) {

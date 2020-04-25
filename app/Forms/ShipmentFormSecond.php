@@ -2,20 +2,16 @@
 
 namespace LuTauch\App\Forms;
 
-use LuTauch\App\Enum\DeliveryEnum;
-use LuTauch\App\Model\CarrierModel;
-use LuTauch\App\Model\CzechPostPickupPointModel;
-use LuTauch\App\Model\Options;
-use LuTauch\App\Model\OptionsModel;
 use LuTauch\App\Model\PickupPoint\CzechPostDoBalikovnyRepository;
 use LuTauch\App\Model\PickupPoint\CzechPostNaPostuRepository;
+use LuTauch\App\Model\Repository\CarrierModel;
+use LuTauch\App\Model\Repository\Options;
+use LuTauch\App\Model\Repository\OptionsModel;
 use LuTauch\app\Model\Repository\ZasilkovnaPickupPointRepository;
-use LuTauch\App\Model\ZasilkovnaPickupPointModel;
+use Nette\Application\AbortException;
 use Nette\Application\Responses\JsonResponse;
 use Nette\Application\UI;
 use Nette\Forms\Form;
-use Tracy\Debugger;
-use function Sodium\add;
 
 
 /**
@@ -121,6 +117,9 @@ class ShipmentFormSecond extends BaseComponent
         $this->options = $options;
     }
 
+    /**
+     * @throws AbortException
+     */
     public function handleAutocomplete() {
         $userInput = $this->getPresenter()->getParameter('userInput');
 
@@ -187,7 +186,7 @@ class ShipmentFormSecond extends BaseComponent
      * for the user from the database and sends them to the second configuration form (by redirect).
      * @param UI\Form $form
      * @param \stdClass $values
-     * @throws \Nette\Application\AbortException
+     * @throws AbortException
      */
     public function shipmentFormSecondSucceeded(UI\Form $form, \stdClass $values)
     {

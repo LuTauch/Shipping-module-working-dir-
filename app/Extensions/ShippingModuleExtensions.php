@@ -3,7 +3,7 @@
 
 namespace LuTauch\App\Extensions;
 
-use LuTauch\App\Model\OrderAcceptance;
+use LuTauch\App\OrderAcceptance;
 use LuTauch\App\Model\PacketItems\Sender;
 use LuTauch\app\Model\Repository\ZasilkovnaPickUpPointDownload;
 use Nette\DI\CompilerExtension;
