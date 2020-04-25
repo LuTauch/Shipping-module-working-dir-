@@ -6,7 +6,7 @@ namespace LuTauch\App\Model\PickupPoint;
 
 use Tracy\Debugger;
 
-class ZasilkovnaPickUpPointDownload
+class ZasilkovnaPickupPointDownload
 {
     /**
      * @var string

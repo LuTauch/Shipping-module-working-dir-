@@ -5,7 +5,7 @@ namespace LuTauch\App\Extensions;
 
 use LuTauch\App\OrderAcceptance;
 use LuTauch\App\Model\PacketItems\Sender;
-use LuTauch\app\Model\PickupPoint\ZasilkovnaPickUpPointDownload;
+use LuTauch\app\Model\PickupPoint\ZasilkovnaPickupPointDownload;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceCreationException;
 
@@ -70,7 +70,7 @@ class ShippingModuleExtensions extends CompilerExtension
             ->setArguments([$this->eshop, $this->countryCode, $this->currency]);
 
         $builder->addDefinition($this->prefix('LuTauch.ZasilkovnaPickupPointDownload'))
-            ->setFactory(ZasilkovnaPickUpPointDownload::class)
+            ->setFactory(ZasilkovnaPickupPointDownload::class)
             ->setArguments([$this->zasilkovnaApiKey, $this->zasilkovnaUrl]);
 
         $builder->addDefinition($this->prefix('LuTauch.Sender'))

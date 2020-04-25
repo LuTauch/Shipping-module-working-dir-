@@ -11,7 +11,7 @@ class ZasilkovnaPickupPoint
 {
     /** lokální kopie xml feedu pro zpracování xml feedu */
     /**
-     * @var ZasilkovnaPickUpPointDownload
+     * @var ZasilkovnaPickupPointDownload
      */
     private $zasilkovnaPickUpPointDownload;
     /**
