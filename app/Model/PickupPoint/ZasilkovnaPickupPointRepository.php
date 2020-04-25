@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LuTauch\app\Model\Repository;
+namespace LuTauch\App\Model\PickupPoint;
 
 
-use LuTauch\App\Model\BaseModel;
+use LuTauch\App\Model\Repository\BaseModel;
 use Tracy\Debugger;
 
 class ZasilkovnaPickupPointRepository extends BaseModel

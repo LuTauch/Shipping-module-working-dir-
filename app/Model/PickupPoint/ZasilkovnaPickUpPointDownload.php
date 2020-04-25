@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LuTauch\app\Model\Repository;
+namespace LuTauch\App\Model\PickupPoint;
 
 
 use Tracy\Debugger;

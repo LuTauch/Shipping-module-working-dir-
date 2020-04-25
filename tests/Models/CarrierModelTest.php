@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Forms;
+namespace LuTauch\tests\Forms;
 
-use App\Model\OptionsModel;
+use LuTauch\App\Model\Repository\OptionsModel;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -13,7 +13,9 @@ $container = require_once __DIR__ . '/../Bootstrap.php';
  */
 class CarrierModelTest extends TestCase
 {
-
+    /**
+     * @var OptionsModel
+     */
     private $optionsModel;
 
     public function setUp()

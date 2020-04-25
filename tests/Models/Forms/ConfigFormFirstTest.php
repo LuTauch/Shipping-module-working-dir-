@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Models\Forms;
+namespace LuTauch\tests\Models\Forms;
 
 
-use App\Forms\ConfigFormFirst;
-use App\Model\Factory\CarrierFactory;
+use LuTauch\App\Forms\ConfigFormFirst;
+use LuTauch\App\Model\Repository\CarrierModel;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -20,7 +20,7 @@ class ConfigFormFirstTest extends TestCase
 
     public function __construct()
     {
-        $this->carrierModel = \Mockery::mock(\App\Model\CarrierModel::class);
+        $this->carrierModel = \Mockery::mock(CarrierModel::class);
     }
 
     public function setUp()
@@ -36,6 +36,7 @@ class ConfigFormFirstTest extends TestCase
 
     /**
      *
+     * @throws \Exception
      */
     public function testCreateConfigFormFirst()
     {

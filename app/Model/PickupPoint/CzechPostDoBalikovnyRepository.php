@@ -3,7 +3,7 @@
 
 namespace LuTauch\App\Model\PickupPoint;
 
-use LuTauch\App\Model\BaseModel;
+use LuTauch\App\Model\Repository\BaseModel;
 use Tracy\Debugger;
 
 class CzechPostDoBalikovnyRepository extends BaseModel

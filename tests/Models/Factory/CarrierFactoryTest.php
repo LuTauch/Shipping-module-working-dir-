@@ -1,10 +1,11 @@
 <?php
 
 
-namespace models\Factory;
+namespace LuTauch\tests\Models\Factory;
 
 
-use App\Model\Factory\CarrierFactory;
+use LuTauch\App\Model\Factory\CarrierFactory;
+use LuTauch\App\Model\PacketItems\Sender;
 use Tester\TestCase;
 use Tester\Assert;
 
@@ -21,9 +22,21 @@ class CarrierFactoryTest extends TestCase
     /** @var CarrierFactory */
     private $carrierFactory;
 
+    /**
+     * @var Sender
+     */
+    private $sender;
+
+    public function __construct()
+    {
+        $this->sender = new Sender('Lucie', '32000', 'Plzeň',
+            'Plzeň-město', 'Solní', '1', '123456789',
+            'lucie@tauchenova.com');
+    }
+
     public function setUp()
     {
-        $this->carrierFactory = new CarrierFactory();
+        $this->carrierFactory = new CarrierFactory($this->sender);
     }
 
     public function tearDown()
@@ -33,14 +46,14 @@ class CarrierFactoryTest extends TestCase
     }
 
     /**
-     *
+     * @throws \NonExistingCarrierException
      */
     public function testCreateExistingCarrier()
     {
-        $carrier = "CeskaPosta";
+        $carrier = "Česká Pošta";
         $res = $this->carrierFactory->createCarrier($carrier);
 
-        Assert::type('App\Model\Carrier\CeskaPosta', $res);
+        Assert::type('LuTauch\App\Model\Carrier\CeskaPosta', $res);
     }
 
     /**
