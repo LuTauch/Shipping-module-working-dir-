@@ -5,7 +5,7 @@ namespace LuTauch\App\Extensions;
 
 use LuTauch\App\OrderAcceptance;
 use LuTauch\App\Model\PacketItems\Sender;
-use LuTauch\app\Model\PickupPoint\ZasilkovnaPickupPointDownload;
+use LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPointDownload;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ServiceCreationException;
 

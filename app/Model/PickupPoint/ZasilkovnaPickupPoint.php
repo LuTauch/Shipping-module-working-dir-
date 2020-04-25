@@ -3,8 +3,8 @@
 
 namespace LuTauch\App\Model\PickupPoint;
 
-use LuTauch\app\Model\Repository\ZasilkovnaPickUpPointDownload;
-use LuTauch\app\Model\Repository\ZasilkovnaPickupPointRepository;
+use LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPointDownload;
+use LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPointRepository;
 use Tracy\Debugger;
 
 class ZasilkovnaPickupPoint
@@ -13,17 +13,17 @@ class ZasilkovnaPickupPoint
     /**
      * @var ZasilkovnaPickupPointDownload
      */
-    private $zasilkovnaPickUpPointDownload;
+    private $zasilkovnaPickupPointDownload;
     /**
      * @var ZasilkovnaPickupPointRepository
      */
     private $zasilkovnaPickupPointRepository;
 
-    public function __construct(ZasilkovnaPickUpPointDownload $zasilkovnaPickUpPointDownload,
+    public function __construct(ZasilkovnaPickupPointDownload $zasilkovnaPickupPointDownload,
                                 ZasilkovnaPickupPointRepository $zasilkovnaPickupPointRepository
     )
     {
-        $this->zasilkovnaPickUpPointDownload = $zasilkovnaPickUpPointDownload;
+        $this->zasilkovnaPickupPointDownload = $zasilkovnaPickupPointDownload;
         $this->zasilkovnaPickupPointRepository = $zasilkovnaPickupPointRepository;
     }
 
@@ -34,7 +34,7 @@ class ZasilkovnaPickupPoint
      */
     public function synchronizePostOfficeData()
     {
-        $branches = $this->zasilkovnaPickUpPointDownload->getBranches();
+        $branches = $this->zasilkovnaPickupPointDownload->getBranches();
         if (!$branches) {
             Debugger::log('Problém se synchronizací dat.');
             return;

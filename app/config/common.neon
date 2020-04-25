@@ -17,4 +17,4 @@ services:
 	- LuTauch\App\Model\PickupPoint\CzechPostNaPostuRepository
 	- LuTauch\App\Model\PickupPoint\CzechPostDoBalikovnyRepository
 	- LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPoint
-	- LuTauch\app\Model\PickupPoint\ZasilkovnaPickupPointRepository
+	- LuTauch\App\Model\PickupPoint\ZasilkovnaPickupPointRepository

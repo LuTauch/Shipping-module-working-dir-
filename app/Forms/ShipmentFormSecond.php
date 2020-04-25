@@ -7,7 +7,7 @@ use LuTauch\App\Model\PickupPoint\CzechPostNaPostuRepository;
 use LuTauch\App\Model\Repository\CarrierModel;
 use LuTauch\App\Model\Repository\Options;
 use LuTauch\App\Model\Repository\OptionsModel;
-use LuTauch\app\Model\Repository\ZasilkovnaPickupPointRepository;
+use LuTauch\app\Model\PickupPoint\ZasilkovnaPickupPointRepository;
 use Nette\Application\AbortException;
 use Nette\Application\Responses\JsonResponse;
 use Nette\Application\UI;

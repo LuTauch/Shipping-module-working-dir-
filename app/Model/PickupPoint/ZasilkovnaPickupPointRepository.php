@@ -10,8 +10,6 @@ use Tracy\Debugger;
 class ZasilkovnaPickupPointRepository extends BaseModel
 {
 
-
-
     public function saveData($data)
     {
         if (empty($data)) {
