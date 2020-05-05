@@ -123,13 +123,9 @@ class CarrierModel extends BaseModel
         return $this->database->query('SELECT price FROM service WHERE service_id = ?', $id)->fetchPairs(NULL, 'price');
     }
 
-    public function getServicesWithPickup()
+    public function getServicesWithPickup($id)
     {
-        $by = [
-            'has_pickup' => 1
-        ];
-
-        return $this->findBy($by);
+        return $this->findBy(['service_id' => $id])->select('has_pickup')->fetchPairs(NULL, 'has_pickup');
     }
 
     /**

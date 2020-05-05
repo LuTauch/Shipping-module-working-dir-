@@ -2,9 +2,11 @@
 
 namespace LuTauch\App\Forms;
 
+use App\Model\OrderSession;
 use LuTauch\App\Model\Repository\CarrierModel;
 use Nette\Application\AbortException;
 use Nette\Application\UI;
+use Tracy\Debugger;
 
 /**
  * Class ShipmentFormFirst
@@ -21,15 +23,20 @@ class ShipmentFormFirst extends BaseComponent
      * @var CarrierModel
      */
     private $carrierModel;
+    /**
+     * @var OrderSession
+     */
+    private $orderSession;
 
 
     /**
      * ConfigFormFirst constructor. important for dependency handover.
      * @param CarrierModel $carrierModel
      */
-    public function __construct(CarrierModel $carrierModel)
+    public function __construct(CarrierModel $carrierModel, OrderSession $orderSession)
     {
         $this->carrierModel = $carrierModel;
+        $this->orderSession = $orderSession;
     }
 
     /**
@@ -51,8 +58,7 @@ class ShipmentFormFirst extends BaseComponent
 
         //sluzby
         $options = [];
-        foreach ($services as $item)
-        {
+        foreach ($services as $item) {
             $options[$item->service_id] = \Nette\Utils\Html::el('span')->setText($item->complete_name . ' (' . $item->price . ' Kč)')->addAttributes(['data-text' => $item->service_id]);
         }
 
@@ -71,13 +77,21 @@ class ShipmentFormFirst extends BaseComponent
      */
     public function shipmentFormFirstSucceeded(UI\Form $form, \stdClass $values)
     {
-        //TODO podminka na presmerovani na overview
-        //$this->presenter->redirect('Order:overview');
+        $this->orderSession->addValue('serviceId', $values->services);
+        $pickup = $this->carrierModel->getServicesWithPickup($values->services)[0];
+        $availableService = $this->carrierModel->findAdditionalServices($values->services);
+        $empty = 0;
+        foreach ($availableService as $service) {
+            if (!empty($service)) {
+                $empty = 1;
+            }
+        }
+        //pokud nemam ani doplnkove sluzby ani pickup -> rovnou overview
+        if ((!$pickup) && (!$empty)) {
+            $this->presenter->redirect('Order:Overview');
+        }
+
         $this->presenter->redirect('Shipment:step2', [$this->serviceIds], [$values->services]);
-
-
-
-
     }
 
 }

@@ -18,6 +18,8 @@ class ShippingModuleExtensions extends CompilerExtension
     const ZASILKOVNA_API_KEY = 'zasilkovnaApiKey';
     const ZASILKOVNA_URL = 'zasilkovnaUrl';
 
+    const SENDER = 'sender';
+
     const SENDER_NAME = 'senderName';
     const SENDER_ZIP = 'senderZip';
     const SENDER_CITY = 'senderCity';
@@ -34,6 +36,10 @@ class ShippingModuleExtensions extends CompilerExtension
         self::COUNTRY_CODE,
         self::ZASILKOVNA_URL,
         self::ZASILKOVNA_API_KEY,
+
+    ];
+
+    const REQUIRED_SENDER_PARAMS = [
         self::SENDER_NAME,
         self::SENDER_ZIP,
         self::SENDER_CITY,
@@ -91,20 +97,26 @@ class ShippingModuleExtensions extends CompilerExtension
             }
         }
 
+        foreach (self::REQUIRED_SENDER_PARAMS as $param) {
+            if (!isset($params[self::SENDER][$param])) {
+                throw new ServiceCreationException('Problém s načtením parametrů odesílatele z modulu!');
+            }
+        }
+
         $this->eshop = $params[self::ESHOP];
         $this->currency = $params[self::CURRENCY];
         $this->countryCode = $params[self::COUNTRY_CODE];
         $this->zasilkovnaApiKey = $params[self::ZASILKOVNA_API_KEY];
         $this->zasilkovnaUrl = $params[self::ZASILKOVNA_URL];
 
-        $this->senderName = $params[self::SENDER_NAME];
-        $this->senderZip = $params[self::SENDER_ZIP];
-        $this->senderCity = $params[self::SENDER_CITY];
-        $this->senderCityPart = $params[self::SENDER_CITY_PART];
-        $this->senderStreet = $params[self::SENDER_STREET];
-        $this->senderStreetNr = $params[self::SENDER_STREET_NR];
-        $this->senderPhone = $params[self::SENDER_PHONE];
-        $this->senderEmail = $params[self::SENDER_EMAIL];
+        $this->senderName = $params[self::SENDER][self::SENDER_NAME];
+        $this->senderZip = $params[self::SENDER][self::SENDER_ZIP];
+        $this->senderCity = $params[self::SENDER][self::SENDER_CITY];
+        $this->senderCityPart = $params[self::SENDER][self::SENDER_CITY_PART];
+        $this->senderStreet = $params[self::SENDER][self::SENDER_STREET];
+        $this->senderStreetNr = $params[self::SENDER][self::SENDER_STREET_NR];
+        $this->senderPhone = $params[self::SENDER][self::SENDER_PHONE];
+        $this->senderEmail = $params[self::SENDER][self::SENDER_EMAIL];
 
     }
 

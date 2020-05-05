@@ -35,7 +35,7 @@ class CeskaPosta implements ICarrier
         $code = $this->getServiceCode($service);
         $senderData = $this->sender->getSenderData();
         $packetData = $this->getPacketData($service, $packet, $code);
-        $res = $this->exportData($senderData, $packetData, $location);
+        $res = $this->exportData($location, $senderData, $packetData);
 
         if (!$res) {
             Debugger::log('Nepodařilo se zpracovat objednávku.', ILogger::ERROR);
@@ -56,7 +56,7 @@ class CeskaPosta implements ICarrier
     vs cod;vs packet=idpacketu;-;-;packet id of the main packet;packet number;
     number of packets;-;-;-;
     */
-    //TODO: vyresit doplnkove sluzby a udanou cenu, popr. vicekusove zasilky
+    //TODO: vyresit doplnkove sluzby a udanou cenu
     public function getPacketData(string $service, Packet $packet, string $code) : string {
         $newId = $this->generateParcelIdNumber($service, $packet);
         $data = [];
@@ -188,18 +188,17 @@ class CeskaPosta implements ICarrier
     private function exportData(string $location, string $sender, string $data)
     {
         $array = [];
-        $array[0] = $sender;
-        $array[1] = $data;
+
 
         if (!file_exists($location)) {
-            $saveResult = file_put_contents($location, $array[0]);
+            $saveResult = file_put_contents($location, $sender);
             if (!$saveResult)
             {
                 Debugger::log('Nepodařilo se uložit data zásilky do souboru .csv', ILogger::ERROR);
                 return FALSE;
             }
         }
-        $saveResult = file_put_contents($location, $array[1], FILE_APPEND);
+        $saveResult = file_put_contents($location, $data, FILE_APPEND);
         if (!$saveResult)
         {
             Debugger::log('Nepodařilo se uložit data zásilky do souboru .csv', ILogger::ERROR);
